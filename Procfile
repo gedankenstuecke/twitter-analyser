@@ -1,1 +1,1 @@
-web: gunicorn twitterlytic.wsgi --log-file=-
+web: gunicorn twitteranalyser.wsgi --log-file=-
