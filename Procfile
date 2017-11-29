@@ -1,2 +1,2 @@
 web: gunicorn twitteranalyser.wsgi --log-file=-
-worker: celery worker -A twitteranalyser --loglevel=DEBUG
+worker: celery worker -A twitteranalyser
