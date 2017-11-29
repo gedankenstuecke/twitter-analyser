@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from tzwhere import tzwhere
+from .models import Graph
 
 import tempfile
 import requests
@@ -142,7 +143,6 @@ def read_files(zip_url):
         f  = io.TextIOWrapper(f)
         d = f.readlines()[1:]
         d = "[{" + "".join(d)
-        print(d)
         json_files = json.loads(d)
     data_frames = []
     for single_file in json_files:
@@ -233,25 +233,36 @@ def predict_gender(dataframe,column_name,rolling_frame='180d'):
     return gdf_pivot
 
 ### DUMP JSON FOR GRAPHING
-def write_json_for_graph(dataframe,
-                         outfile='graph.json',
-                         format='records'):
-    json_object = dataframe.to_json(orient=format)
-    with open(outfile,'w') as f:
-        f.write(json_object)
+def write_graph(dataframe, graph_type, graph_desc):
+    json_object = dataframe.to_json(orient='records')
+    graph = Graph.objects.create()
+    try:
+        graph.graph_type = graph_type
+        graph.graph_description = graph_desc
+        graph.graph_data = str(json_object)
+        graph.save()
+    except:
+        graph.delete()
 
 
-
-def __main__():
-    dataframe = create_main_dataframe()
-    retweet_gender = predict_gender(dataframe,'retweet_name','180d')
-    write_json_for_graph(retweet_gender,'gender_rt.json')
-    reply_gender = predict_gender(dataframe,'reply_name','180d')
-    write_json_for_graph(retweet_gender,'gender_reply.json')
+#def __main__():
+#    dataframe = create_main_dataframe()
+#    retweet_gender = predict_gender(dataframe,'retweet_name','180d')
+#    write_json_for_graph(retweet_gender,'gender_rt','retweets by gender')
+    #reply_gender = predict_gender(dataframe,'reply_name','180d')
+    #write_json_for_graph(retweet_gender,'gender_reply.json')
 
 @shared_task
 def xsum(numbers):
     return sum(numbers)
 
+@shared_task
+def import_data(url='http://ruleofthirds.de/test_archive.zip'):
+    dataframe = create_main_dataframe(url)
+    retweet_gender = predict_gender(dataframe,'retweet_name','180d')
+    write_graph(retweet_gender,'gender_rt','retweets by gender')
+    reply_gender = predict_gender(dataframe,'reply_name','180d')
+    write_graph(reply_gender,'gender_reply','replies by gender')
 
-__main__()
+#if __name__ == "__main__":
+#    main()
