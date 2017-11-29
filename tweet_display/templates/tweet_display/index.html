@@ -1,0 +1,74 @@
+<html lang='en'>
+  <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.js"></script>
+
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.css' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body>
+    <script>
+    d3.json('hourly_tweets/', function(hdata) {
+      console.log(hdata);
+      MG.data_graphic({
+        title: "Tweets per Hour",
+        description: "How much do you tweet per hour?",
+        data: hdata,
+        width: 600,
+        height: 450,
+        top: 50,
+        right: 40,
+        target: ".hourly_tweets",
+        x_accessor: "hour",
+        y_accessor: [ 'Weekday', 'Weekend'],
+        legend: [ 'Weekday',
+                'Weekend'],
+                aggregate_rollover: true,
+                x_label : 'hour',
+                xax_count : 24,
+                y_extended_ticks: true
+
+        });
+      });
+
+      d3.json('gender_rt/', function(data) {
+         data = MG.convert.date(data, 'date');
+         MG.data_graphic({
+           title: "retweets & gender",
+           description: "Gender distribution amongst retweets",
+           data: data,
+           width: 600,
+           height: 450,
+           right: 40,
+           target: ".gender_rt",
+           x_accessor: "date",
+           y_accessor: ["male",'female'],
+           legend: ["male",'female'],
+           aggregate_rollover: true,
+         });
+      });
+
+      d3.json('gender_reply/', function(data) {
+         data = MG.convert.date(data, 'date');
+         MG.data_graphic({
+           title: "replies & gender",
+           description: "Gender distribution amongst replies",
+           data: data,
+           width: 600,
+           height: 450,
+           right: 40,
+           target: ".gender_replies",
+           x_accessor: "date",
+           y_accessor: ["male",'female'],
+           legend: ["male",'female'],
+           aggregate_rollover: true,
+         });
+      });
+      </script>
+      <div class='gender_rt'></div>
+      <div class='gender_replies'></div>
+      <div class='hourly_tweets'></div>
+  </body>
+</html>
