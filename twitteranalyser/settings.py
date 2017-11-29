@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'tweet_display.apps.TweetDisplayConfig'
-    'tweet_display'
+    'tweet_display.apps.TweetDisplayConfig'
 ]
 
 MIDDLEWARE = [
