@@ -134,14 +134,17 @@ def create_dataframe(tweets):
 
 def read_files(zip_url):
     tf = tempfile.NamedTemporaryFile()
+    print('downloading files')
     tf.write(requests.get(zip_url).content)
     zf = zipfile.ZipFile(tf.name)
+    print('reading index')
     with zf.open('data/js/tweet_index.js','r') as f:
         f  = io.TextIOWrapper(f)
         d = f.readlines()[1:]
         d = "[{" + "".join(d)
         json_files = json.loads(d)
     data_frames = []
+    print('iterate over individual files')
     for single_file in json_files:
         with zf.open(single_file['file_name']) as f:
             f  = io.TextIOWrapper(f)
@@ -153,7 +156,9 @@ def read_files(zip_url):
     return data_frames
 
 def create_main_dataframe(zip_url='http://ruleofthirds.de/test_archive.zip'):
+    print('reading files')
     dataframes = read_files(zip_url)
+    print('concatenating...')
     dataframe = pd.concat(dataframes)
     dataframe = dataframe.sort_values('utc_time',ascending=False)
     dataframe = dataframe.set_index('utc_time')
