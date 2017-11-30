@@ -10,3 +10,4 @@ psycopg2==2.7.3.1
 redis==2.10.6
 celery==4.1.0
 requests==2.18.4
+timezonefinder==2.1.2

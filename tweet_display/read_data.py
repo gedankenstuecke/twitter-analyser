@@ -1,4 +1,4 @@
-from tzwhere import tzwhere
+from timezonefinder import TimezoneFinder
 import tempfile
 import zipfile
 import json
@@ -11,6 +11,7 @@ import requests
 
 
 #tzwhere_ = tzwhere.tzwhere()
+tzf = TimezoneFinder()
 
 
 ### READ JSON FILES FROM TWITTER ARCHIVE!
@@ -74,7 +75,7 @@ def convert_time(coordinates,time_utc):
     otherwise return nones
     '''
     if coordinates[0] and coordinates[1]:
-        timezone_str = tzwhere_.tzNameAt(coordinates[0],coordinates[1])
+        timezone_str = tzf.timezone_at(coordinates[0],coordinates[1])
         if timezone_str:
             timezone = pytz.timezone(timezone_str)
             time_obj_local = datetime.datetime.astimezone(time_utc,timezone)
