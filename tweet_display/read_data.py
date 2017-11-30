@@ -75,7 +75,7 @@ def convert_time(coordinates,time_utc):
     otherwise return nones
     '''
     if coordinates[0] and coordinates[1]:
-        timezone_str = tzf.timezone_at(coordinates[0],coordinates[1])
+        timezone_str = tzf.timezone_at(lat=coordinates[0],lng=coordinates[1])
         if timezone_str:
             timezone = pytz.timezone(timezone_str)
             time_obj_local = datetime.datetime.astimezone(time_utc,timezone)
