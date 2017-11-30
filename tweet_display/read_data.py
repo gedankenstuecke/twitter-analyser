@@ -147,6 +147,7 @@ def read_files(zip_url):
     data_frames = []
     print('iterate over individual files')
     for single_file in json_files:
+        print('read ' + single_file['file_name'])
         with zf.open(single_file['file_name']) as f:
             f  = io.TextIOWrapper(f)
             d = f.readlines()[1:]
