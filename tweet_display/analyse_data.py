@@ -58,4 +58,8 @@ def create_hourly_stats(dataframe):
     local_times['values'] = local_times[0]
     local_times = local_times.set_index(local_times['hour'])
 
-    return local_times.pivot(columns='weekday', values='values').reset_index()
+    local_times = local_times.pivot(columns='weekday', values='values').reset_index()
+    local_times['Weekday'] = local_times['Weekday'] / 5
+    local_times['Weekend'] = local_times['Weekend'] / 2
+
+    return local_times.reset_index()
