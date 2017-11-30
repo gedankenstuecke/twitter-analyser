@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 
 
-tzwhere_ = tzwhere.tzwhere()
+#tzwhere_ = tzwhere.tzwhere()
 
 
 ### READ JSON FILES FROM TWITTER ARCHIVE!
