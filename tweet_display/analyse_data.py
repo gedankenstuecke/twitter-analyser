@@ -1,5 +1,6 @@
 import pandas as pd
 import gender_guesser.detector as gender
+import geojson
 gender_guesser = gender.Detector(case_sensitive=False)
 
 def predict_gender(dataframe,column_name,rolling_frame='180d'):
@@ -113,3 +114,18 @@ def create_top_replies(dataframe):
 
 def create_heatmap(dataframe):
     return dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
+
+def create_timeline(dataframe):
+    timeline = dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
+    timeline['start'] = timeline.index.date
+    timeline['end'] = timeline['start'] + pd.DateOffset(1)
+    features = []
+    timeline.apply(lambda X: features.append(
+        geojson.Feature(geometry=geojson.Point((float(X["longitude"]),
+                                                float(X["latitude"]),)),
+                        properties=dict(start=str(X["start"]),
+                                    end=str(X["end"])))
+                                            )
+                , axis=1)
+
+    return geojson.dumps(features)

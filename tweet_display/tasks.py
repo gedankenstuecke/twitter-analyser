@@ -4,8 +4,9 @@ from .models import Graph
 import json
 
 from .read_data import create_main_dataframe
-from .analyse_data import predict_gender,create_hourly_stats
-from .analyse_data import create_tweet_types,create_top_replies,create_heatmap
+from .analyse_data import predict_gender, create_hourly_stats
+from .analyse_data import create_tweet_types, create_top_replies
+from .analyse_data import create_heatmap, create_timeline
 
 ### GENERATE JSON FOR GRAPHING ON THE WEB
 
@@ -17,6 +18,16 @@ def write_graph(dataframe, graph_type, graph_desc,double_precision=2,orient='rec
         graph.graph_type = graph_type
         graph.graph_description = graph_desc
         graph.graph_data = str(json_object)
+        graph.save()
+    except:
+        graph.delete()
+
+def write_json(json_object,graph_type,graph_desc):
+    graph = Graph.objects.create()
+    try:
+        graph.graph_type = graph_type
+        graph.graph_description = graph_desc
+        graph.graph_data = json_object
         graph.save()
     except:
         graph.delete()
@@ -40,3 +51,5 @@ def import_data(url='http://ruleofthirds.de/test_archive.zip'):
     write_graph(top_replies,'top_replies','top users you replied to over time')
     heatmap = create_heatmap(dataframe)
     write_graph(heatmap,'heatmap','heatmap of tweet geolocation',orient='values')
+    timeline = create_timeline(dataframe)
+    write_json(timeline,'timeline','geojson to animate timeline')

@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^tweet_types/$', views.tweet_types, name='tweet_types'),
     url(r'^top_replies/$', views.top_replies, name='top_replies'),
     url(r'^heatmap/$', views.heatmap, name='heatmap'),
+    url(r'^timeline/$', views.timeline, name='timeline'),
 ]

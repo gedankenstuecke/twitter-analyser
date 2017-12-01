@@ -33,3 +33,7 @@ def top_replies(request):
 def heatmap(request):
     graph = Graph.objects.filter(graph_type__exact='heatmap')[0]
     return HttpResponse(graph.graph_data, content_type='application/json')
+
+def timeline(request):
+    graph = Graph.objects.filter(graph_type__exact='timeline')[0]
+    return HttpResponse(graph.graph_data, content_type='application/json')
