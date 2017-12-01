@@ -63,3 +63,50 @@ def create_hourly_stats(dataframe):
     local_times['Weekend'] = local_times['Weekend'] / 2
 
     return local_times.reset_index()
+
+
+
+def create_tweet_types(dataframe):
+    dataframe_grouped = dataframe.groupby(dataframe.index.date).count()
+    dataframe_grouped.index = pd.to_datetime(dataframe_grouped.index)
+
+    dataframe_mean_week = dataframe_grouped.rolling('180d').mean()
+    dataframe_mean_week['p_url'] = (dataframe_mean_week['url'] / dataframe_mean_week['text']) * 100
+    dataframe_mean_week['p_media'] = (dataframe_mean_week['media'] / dataframe_mean_week['text']) * 100
+    dataframe_mean_week['p_reply'] = (dataframe_mean_week['reply_name'] / dataframe_mean_week['text']) * 100
+    dataframe_mean_week['p_rt'] = (dataframe_mean_week['retweet_name'] / dataframe_mean_week['text']) * 100
+    dataframe_mean_week['p_hash'] = (dataframe_mean_week['hashtag'] / dataframe_mean_week['text']) * 100
+    dataframe_mean_week['p_other'] = 100 - (dataframe_mean_week['p_reply'] + dataframe_mean_week['p_rt'])
+
+    dataframe_mean_week = dataframe_mean_week.reset_index()
+    dataframe_mean_week['date'] = dataframe_mean_week['index'].astype(str)
+    dataframe_mean_week = dataframe_mean_week.drop(['reply_user_name',
+                                                    'retweet_user_name',
+                                                    'latitude',
+                                                    'longitude',
+                                                    'local_time',
+                                                    'url',
+                                                    'media',
+                                                    'reply_name',
+                                                    'retweet_name',
+                                                    'hashtag',
+                                                    'index',
+                                                   ],
+                                                   axis=1)
+
+    return dataframe_mean_week.reset_index()
+
+
+def create_top_replies(dataframe):
+    top_replies = dataframe[dataframe['reply_user_name'].isin(list(dataframe['reply_user_name'].value_counts()[:5].reset_index()['index']))]
+    top_replies = top_replies.reset_index()[['reply_user_name','utc_time']]
+    top_replies['utc_time'] = top_replies['utc_time'].dt.date
+    top_replies = top_replies.groupby(["utc_time", "reply_user_name"]).size()
+    top_replies = top_replies.reset_index()
+    top_replies['date'] = top_replies['utc_time'].astype(str)
+    top_replies['value'] = top_replies[0]
+    top_replies = top_replies.drop([0,'utc_time'],axis=1)
+    top_replies['date'] = pd.to_datetime(top_replies['date'])
+    top_replies = top_replies.groupby(['reply_user_name', pd.Grouper(key='date', freq='QS')])['value'].sum().reset_index().sort_values('date')
+    top_replies['date'] = top_replies['date'].astype(str)
+    return top_replies.reset_index().pivot(index='date', columns='reply_user_name', values='value').fillna(value=0).reset_index()

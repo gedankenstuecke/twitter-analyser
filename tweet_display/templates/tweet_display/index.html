@@ -4,18 +4,17 @@
     <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
     <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.css' rel='stylesheet' type='text/css'>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.js"></script>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.css' rel='stylesheet' type='text/css'>
   </head>
 
   <body>
     <script>
     d3.json('hourly_tweets/', function(hdata) {
-      console.log(hdata);
       MG.data_graphic({
         title: "Tweets per Hour",
         description: "How much do you tweet per hour?",
@@ -70,9 +69,54 @@
            aggregate_rollover: true,
          });
       });
+
+      d3.json('tweet_types/', function(data) {
+         data = MG.convert.date(data, 'date');
+         MG.data_graphic({
+           title: "Tweet classifications",
+           description: "Percent of your tweets in a given window that are replies, retweets or regular tweets",
+           data: data,
+           width: 600,
+           height: 450,
+           right: 40,
+           target: ".tweet_types",
+           x_accessor: "date",
+           y_accessor: ["p_rt",'p_reply','p_other'],
+           legend: ["retweets",'replies','regular tweets'],
+           aggregate_rollover: true,
+           x_label: 'Date',
+           y_extended_ticks: true,
+           markers: [{'date': new Date('2009-11-06T00:00:00.000Z'), 'label': 'Twitter "invents" retweets'}],
+         })
+      });
+
+      d3.json('top_replies/', function(data) {
+         data = MG.convert.date(data, 'date');
+         y_keys = Object.keys(data[0]);
+         y_keys = y_keys.filter(function(item) {
+           return item !== 'date'
+         });
+         MG.data_graphic({
+           title: "top replies",
+           description: "top replies",
+           data: data,
+           width: 1200,
+           height: 650,
+           right: 60,
+           target: ".top_replies",
+           x_accessor: "date",
+           y_accessor: y_keys,
+           legend: y_keys,
+           aggregate_rollover: true,
+           interpolate: d3.curveMonotoneX,
+         });
+      });
+
       </script>
       <div class='gender_rt'></div>
       <div class='gender_replies'></div>
       <div class='hourly_tweets'></div>
+      <div class='tweet_types'></div>
+      <div class='top_replies'></div>
   </body>
 </html>

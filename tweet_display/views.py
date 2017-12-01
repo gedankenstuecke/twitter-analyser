@@ -21,3 +21,11 @@ def gender_reply(request):
 def hourly_tweets(request):
     graph = Graph.objects.filter(graph_type__exact='hourly_tweets')[0]
     return HttpResponse(graph.graph_data, content_type='application/json')
+
+def tweet_types(request):
+    graph = Graph.objects.filter(graph_type__exact='tweet_types')[0]
+    return HttpResponse(graph.graph_data, content_type='application/json')
+
+def top_replies(request):
+    graph = Graph.objects.filter(graph_type__exact='top_replies')[0]
+    return HttpResponse(graph.graph_data, content_type='application/json')

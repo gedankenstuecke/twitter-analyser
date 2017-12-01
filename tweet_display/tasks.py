@@ -4,12 +4,12 @@ from .models import Graph
 import json
 
 from .read_data import create_main_dataframe
-from .analyse_data import predict_gender,create_hourly_stats
+from .analyse_data import predict_gender,create_hourly_stats,create_tweet_types,create_top_replies
 
 ### GENERATE JSON FOR GRAPHING ON THE WEB
 
 ### DUMP JSON FOR GRAPHING
-def write_graph(dataframe, graph_type, graph_desc):
+def write_graph(dataframe, graph_type, graph_desc,double_precision=2):
     json_object = dataframe.to_json(orient='records')
     graph = Graph.objects.create()
     try:
@@ -33,3 +33,7 @@ def import_data(url='http://ruleofthirds.de/test_archive.zip'):
     write_graph(reply_gender,'gender_reply','replies by gender')
     hourly_stats = create_hourly_stats(dataframe)
     write_graph(hourly_stats,'hourly_tweets','tweets per hour')
+    tweet_types = create_tweet_types(dataframe)
+    write_graph(tweet_types,'tweet_types','tweet types over time')
+    top_replies = create_top_replies(dataframe)
+    write_graph(top_replies,'top_replies','top users you replied to over time')
