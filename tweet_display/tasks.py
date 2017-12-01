@@ -4,13 +4,14 @@ from .models import Graph
 import json
 
 from .read_data import create_main_dataframe
-from .analyse_data import predict_gender,create_hourly_stats,create_tweet_types,create_top_replies
+from .analyse_data import predict_gender,create_hourly_stats
+from .analyse_data import create_tweet_types,create_top_replies,create_heatmap
 
 ### GENERATE JSON FOR GRAPHING ON THE WEB
 
 ### DUMP JSON FOR GRAPHING
-def write_graph(dataframe, graph_type, graph_desc,double_precision=2):
-    json_object = dataframe.to_json(orient='records')
+def write_graph(dataframe, graph_type, graph_desc,double_precision=2,orient='records'):
+    json_object = dataframe.to_json(orient=orient)
     graph = Graph.objects.create()
     try:
         graph.graph_type = graph_type
@@ -37,3 +38,5 @@ def import_data(url='http://ruleofthirds.de/test_archive.zip'):
     write_graph(tweet_types,'tweet_types','tweet types over time')
     top_replies = create_top_replies(dataframe)
     write_graph(top_replies,'top_replies','top users you replied to over time')
+    heatmap = create_heatmap(dataframe)
+    write_graph(heatmap,'heatmap','heatmap of tweet geolocation',orient='values')

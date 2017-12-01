@@ -110,3 +110,6 @@ def create_top_replies(dataframe):
     top_replies = top_replies.groupby(['reply_user_name', pd.Grouper(key='date', freq='QS')])['value'].sum().reset_index().sort_values('date')
     top_replies['date'] = top_replies['date'].astype(str)
     return top_replies.reset_index().pivot(index='date', columns='reply_user_name', values='value').fillna(value=0).reset_index()
+
+def create_heatmap(dataframe):
+    return dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]

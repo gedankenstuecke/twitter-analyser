@@ -10,6 +10,18 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.js"></script>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
+    <style>
+        #map { width: 800px; height: 400px; }
+        body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
+        .ghbtns { position: relative; top: 4px; margin-left: 5px; }
+        a { color: #0077ff; }
+    </style>
+
   </head>
 
   <body>
@@ -118,5 +130,19 @@
       <div class='hourly_tweets'></div>
       <div class='tweet_types'></div>
       <div class='top_replies'></div>
-  </body>
+
+      <div id="map"></div>
+
+      <script>
+        d3.json('heatmap/', function(data) {
+          var map = L.map('map').setView([0, 0], 1);
+
+          var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+          }).addTo(map);
+
+          var heat = L.heatLayer(data,{'radius':15,'minOpacity':0.4}).addTo(map);
+        })
+      </script>
+    </body>
 </html>

@@ -29,3 +29,7 @@ def tweet_types(request):
 def top_replies(request):
     graph = Graph.objects.filter(graph_type__exact='top_replies')[0]
     return HttpResponse(graph.graph_data, content_type='application/json')
+
+def heatmap(request):
+    graph = Graph.objects.filter(graph_type__exact='heatmap')[0]
+    return HttpResponse(graph.graph_data, content_type='application/json')
