@@ -11,6 +11,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.11.0/metricsgraphics.min.js"></script>
 
+    {% load static %}
+    <link href='{% static "css/metricsgraphics.css" %}' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
        integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
        crossorigin=""/>
@@ -22,7 +24,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 
     <style>
-        #map { width: 800px; height: 400px; }
+        #map { width: 900px; height: 500px; }
         body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
         .ghbtns { position: relative; top: 4px; margin-left: 5px; }
         a { color: #0077ff; }
@@ -40,7 +42,7 @@
         width: 600,
         height: 450,
         top: 50,
-        right: 40,
+        right: 60,
         target: ".hourly_tweets",
         x_accessor: "hour",
         y_accessor: [ 'Weekday', 'Weekend'],
@@ -53,6 +55,8 @@
 
         });
       });
+      d3.selectAll('.mg-year-marker text')
+    .attr('transform', 'translate(0, 8)');
 
       d3.json('gender_rt/', function(data) {
          data = MG.convert.date(data, 'date');
@@ -62,7 +66,7 @@
            data: data,
            width: 600,
            height: 450,
-           right: 40,
+           right: 60,
            target: ".gender_rt",
            x_accessor: "date",
            y_accessor: ["male",'female'],
@@ -79,7 +83,7 @@
            data: data,
            width: 600,
            height: 450,
-           right: 40,
+           right: 60,
            target: ".gender_replies",
            x_accessor: "date",
            y_accessor: ["male",'female'],
@@ -96,7 +100,7 @@
            data: data,
            width: 600,
            height: 450,
-           right: 40,
+           right: 100,
            target: ".tweet_types",
            x_accessor: "date",
            y_accessor: ["p_rt",'p_reply','p_other'],
@@ -120,7 +124,8 @@
            data: data,
            width: 1200,
            height: 650,
-           right: 60,
+           right: 100,
+           bottom: 80,
            target: ".top_replies",
            x_accessor: "date",
            y_accessor: y_keys,
