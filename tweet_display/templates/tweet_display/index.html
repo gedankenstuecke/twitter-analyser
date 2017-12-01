@@ -22,12 +22,29 @@
        crossorigin=""></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src='{% static "javascripts/leaflet.timeline.js"%}'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 
     <style>
         #map { width: 900px; height: 500px; }
         body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
         .ghbtns { position: relative; top: 4px; margin-left: 5px; }
         a { color: #0077ff; }
+
+
+        #tlmap {
+          width: 900px;
+          height: 500px;
+        }
+        .leaflet-bottom.leaflet-left{
+          width: 100%;
+        }
+        .leaflet-control-container .leaflet-timeline-controls{
+          box-sizing: border-box;
+          width: 100%;
+          margin: 0;
+          margin-bottom: 15px;
+        }
     </style>
 
   </head>
@@ -155,5 +172,44 @@
           var heat = L.heatLayer(data,{'radius':15,'minOpacity':0.4}).addTo(map);
         })
       </script>
+
+      <div id="tlmap"></div>
+      <script>
+        d3.json('timeline/', function(data) {
+          var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+          var osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">' +
+            'OpenStreetMap</a> contributors';
+          var osm = L.tileLayer(osmUrl, {
+            maxZoom: 18,
+            attribution: osmAttrib,
+          });
+          var tlmap = L.map('tlmap', {
+            layers: [osm],
+            center: new L.LatLng(0,0),
+            zoom: 1,
+          });
+
+          var timelineControl = L.timelineSliderControl({
+            duration: 40000,
+            formatOutput: function(date){
+              return moment(date).format("YYYY-MM-DD");
+            }
+          });
+          var timeline = L.timeline(data, {
+            pointToLayer: function(data, latlng){
+              return L.circleMarker(latlng, {
+                radius: 5,
+                fillColor: "hsl(196, 100%, 60%)",
+                weight: 0,
+                opacity: 0.2
+                })
+              }
+          });
+          timelineControl.addTo(tlmap);
+          timelineControl.addTimelines(timeline);
+          timeline.addTo(tlmap);
+        });
+      </script>
+
     </body>
 </html>

@@ -118,7 +118,7 @@ def create_heatmap(dataframe):
 def create_timeline(dataframe):
     timeline = dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
     timeline['start'] = timeline.index.date
-    timeline['end'] = timeline['start'] + pd.DateOffset(1)
+    timeline['end'] = pd.Series(index=timeline.index).tshift(periods=21, freq='D').index.date
     features = []
     timeline.apply(lambda X: features.append(
         geojson.Feature(geometry=geojson.Point((float(X["longitude"]),
@@ -128,4 +128,4 @@ def create_timeline(dataframe):
                                             )
                 , axis=1)
 
-    return geojson.dumps(features)
+    return geojson.dumps(geojson.FeatureCollection(features))
