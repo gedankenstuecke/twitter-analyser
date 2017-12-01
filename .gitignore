@@ -4,3 +4,5 @@ staticfiles
 .env
 .ipynb_checkpoints
 twitter_archive/
+db.sqlite3
+dump.rdb
