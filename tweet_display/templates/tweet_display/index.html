@@ -146,8 +146,8 @@
   d3.json('overall_tweets/', function(data) {
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
-       title: "Overall Tweets",
-       description: "All tweets over time",
+       title: "Tweets per day",
+       description: "How tweets per day evolve over time",
        data: data,
        width: 600,
        height: 450,
