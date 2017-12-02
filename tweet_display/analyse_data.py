@@ -115,6 +115,15 @@ def create_top_replies(dataframe):
 def create_heatmap(dataframe):
     return dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
 
+def create_overall(dataframe):
+    dataframe_grouped = dataframe.groupby(dataframe.index.date).count()['text']
+    dataframe_grouped.index = pd.to_datetime(dataframe_grouped.index)
+    dataframe_mean_week = dataframe_grouped.rolling('180d').mean()
+    dataframe_mean_week = dataframe_mean_week.reset_index()
+    dataframe_mean_week['tweets'] = dataframe_mean_week['text']
+    dataframe_mean_week['date'] = dataframe_mean_week['index'].dt.date.astype(str)
+    return dataframe_mean_week[['date','tweets']]
+
 def create_timeline(dataframe):
     timeline = dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
     timeline['start'] = timeline.index.date

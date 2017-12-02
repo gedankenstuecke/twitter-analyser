@@ -28,6 +28,7 @@
 <div class='gender_replies'></div>
 <div class='hourly_tweets'></div>
 <div class='tweet_types'></div>
+<div class='overall_tweets'></div>
 <div class='top_replies'></div>
 <div id="map"></div>
 <div id="tlmap"></div>
@@ -139,6 +140,23 @@
        legend: y_keys,
        aggregate_rollover: true,
        interpolate: d3.curveMonotoneX,
+     });
+  });
+
+  d3.json('overall_tweets/', function(data) {
+     data = MG.convert.date(data, 'date');
+     MG.data_graphic({
+       title: "Overall Tweets",
+       description: "All tweets over time",
+       data: data,
+       width: 600,
+       height: 450,
+       right: 60,
+       full_width: true,
+       area: false,
+       target: ".overall_tweets",
+       x_accessor: "date",
+       y_accessor: "tweets",
      });
   });
 

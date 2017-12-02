@@ -6,7 +6,7 @@ import json
 from .read_data import create_main_dataframe
 from .analyse_data import predict_gender, create_hourly_stats
 from .analyse_data import create_tweet_types, create_top_replies
-from .analyse_data import create_heatmap, create_timeline
+from .analyse_data import create_heatmap, create_timeline,create_overall
 
 ### GENERATE JSON FOR GRAPHING ON THE WEB
 
@@ -53,3 +53,5 @@ def import_data(url='http://ruleofthirds.de/test_archive.zip'):
     write_graph(heatmap,'heatmap','heatmap of tweet geolocation',orient='values')
     timeline = create_timeline(dataframe)
     write_json(timeline,'timeline','geojson to animate timeline')
+    overall_tweets = create_overall(dataframe)
+    write_graph(overall_tweets,'overall_tweets','all tweets over time')
