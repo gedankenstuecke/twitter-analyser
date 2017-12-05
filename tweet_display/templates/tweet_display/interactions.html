@@ -1,0 +1,70 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+
+<div class='top_replies'></div>
+<div class='gender_rt'></div>
+<div class='gender_replies'></div>
+
+<script>
+d3.json('/tweet_display/gender_rt/', function(data) {
+   data = MG.convert.date(data, 'date');
+   MG.data_graphic({
+     title: "retweets & gender",
+     description: "Gender distribution amongst retweets",
+     data: data,
+     width: 600,
+     height: 450,
+     right: 60,
+     full_width: true,
+     target: ".gender_rt",
+     x_accessor: "date",
+     y_accessor: ["male",'female'],
+     legend: ["male",'female'],
+     aggregate_rollover: true,
+   });
+});
+
+d3.json('/tweet_display/gender_reply/', function(data) {
+   data = MG.convert.date(data, 'date');
+   MG.data_graphic({
+     title: "replies & gender",
+     description: "Gender distribution amongst replies",
+     data: data,
+     width: 600,
+     height: 450,
+     right: 60,
+     full_width: true,
+     target: ".gender_replies",
+     x_accessor: "date",
+     y_accessor: ["male",'female'],
+     legend: ["male",'female'],
+     aggregate_rollover: true,
+   });
+});
+
+d3.json('/tweet_display/top_replies/', function(data) {
+   data = MG.convert.date(data, 'date');
+   y_keys = Object.keys(data[0]);
+   y_keys = y_keys.filter(function(item) {
+     return item !== 'date'
+   });
+   MG.data_graphic({
+     title: "top replies",
+     description: "top replies",
+     data: data,
+     width: 1200,
+     height: 650,
+     right: 100,
+     bottom: 80,
+     full_width: true,
+     target: ".top_replies",
+     x_accessor: "date",
+     y_accessor: y_keys,
+     legend: y_keys,
+     aggregate_rollover: true,
+     interpolate: d3.curveMonotoneX,
+   });
+});
+
+</script>
