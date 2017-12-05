@@ -127,7 +127,7 @@ def create_overall(dataframe):
 def create_timeline(dataframe):
     timeline = dataframe[dataframe['latitude'].notnull()][['latitude','longitude']]
     timeline['start'] = timeline.index.date
-    timeline['end'] = pd.Series(index=timeline.index).tshift(periods=21, freq='D').index.date
+    timeline['end'] = pd.Series(index=timeline.index).tshift(periods=28, freq='D').index.date
     features = []
     timeline.apply(lambda X: features.append(
         geojson.Feature(geometry=geojson.Point((float(X["longitude"]),

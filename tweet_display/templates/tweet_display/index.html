@@ -3,7 +3,7 @@
 {% block content %}
 
 <style>
-    #map { width: 100%; height: 50%; }
+    #map { width: 100%; height: 70%; }
     body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
     .ghbtns { position: relative; top: 4px; margin-left: 5px; }
     a { color: #0077ff; }
@@ -11,7 +11,7 @@
 
     #tlmap {
       width: 100%;
-      height: 50%;
+      height: 70%;
     }
     .leaflet-bottom.leaflet-left{
       width: 100%;
@@ -164,7 +164,7 @@
 
   <script>
     d3.json('heatmap/', function(data) {
-      var map = L.map('map').setView([0, 0], 1);
+      var map = L.map('map').setView([30, 0], 2);
 
       var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -187,8 +187,8 @@
       });
       var tlmap = L.map('tlmap', {
         layers: [osm],
-        center: new L.LatLng(0,0),
-        zoom: 1,
+        center: new L.LatLng(30,0),
+        zoom: 2,
       });
 
       var timelineControl = L.timelineSliderControl({
