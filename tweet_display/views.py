@@ -6,7 +6,7 @@ from .models import Graph
 
 # Create your views here.
 def index(request):
-    context = {}
+    context = {'section' : 'general'}
     return render(request, 'tweet_display/index.html', context)
 
 def gender_rt(request):
@@ -43,9 +43,9 @@ def overall_tweets(request):
     return HttpResponse(graph.graph_data, content_type='application/json')
 
 def location(request):
-    context = {}
+    context = {'section' : 'location'}
     return render(request, 'tweet_display/location.html', context)
 
 def interactions(request):
-    context = {}
+    context = {'section' : 'interactions'}
     return render(request, 'tweet_display/interactions.html', context)

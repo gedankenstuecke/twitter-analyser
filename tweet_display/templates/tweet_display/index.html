@@ -2,7 +2,43 @@
 
 {% block content %}
 
-<div class='overall_tweets'></div>
+<div class="row">
+  <div class="col-md-8">
+    <div class='overall_tweets'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Tweets per day</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          The amount we tweet per day can change over time. This data can be
+          really noisy: On some days we might hammer out one tweet after the other,
+          while on other days we don't get around to doing much tweeting at all.
+          There might be vacations, days where you're sick in bed etc. This can make
+          it very hard to see long-term trends.
+        </p>
+        <p>
+          For this reason the data here was
+          averaged to remove the noise. This was done by applying a rolling average
+          on a 180 day window. This should make it much easier to see how one's
+          behaviour changed over larger time-frames (In <code>pandas</code> this
+          rolling average is created by
+          <code>
+            dataframe.rolling('180d').mean()
+          </code>).
+        </p>
+        <p>
+          In our graph to the left the <code>x-axis</code> gives us the time since
+          one signed up for <i>Twitter</i> and the <code>y-axis</code> gives the
+          normalized number of tweets on a given day.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class='tweet_types'></div>
 <div class='hourly_tweets'></div>
 
@@ -56,7 +92,7 @@
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
        title: "Tweets per day",
-       description: "How tweets per day evolve over time",
+       description: "How much you tweeted per day",
        data: data,
        width: 600,
        height: 450,
