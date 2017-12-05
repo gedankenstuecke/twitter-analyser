@@ -38,8 +38,50 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-8">
+    <div class='tweet_types'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Different types of tweets over time</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          There are different types of tweets one can send on Twitter. Some tweets
+          are <code>replies</code> to tweets by other users, while other tweets are
+          <code>retweets</code> of tweets done by other users.
+          Last, but not least there are the good old <code>regular tweets</code>,
+          which are neither a reply to anyone nor a retweet of tweet.
 
-<div class='tweet_types'></div>
+          And of course 
+
+          really noisy: On some days we might hammer out one tweet after the other,
+          while on other days we don't get around to doing much tweeting at all.
+          There might be vacations, days where you're sick in bed etc. This can make
+          it very hard to see long-term trends.
+        </p>
+        <p>
+          Again, this data might be very noisy due to short-time changes.
+          For this reason the data here was averaged to remove the noise.
+          This was done by applying a rolling average on a 180 day window.
+          This should make it much easier to see how one's
+          behaviour changed over larger time-frames (In <code>pandas</code> this
+          rolling average is created by
+          <code>
+            dataframe.rolling('180d').mean()
+          </code>).
+        </p>
+        <p>
+          In our graph to the left the <code>x-axis</code> gives us the time since
+          one signed up for <i>Twitter</i> and the <code>y-axis</code> gives the
+          percentage that different tweet types account for on the overall tweet volume.
+        </p>
+      </div>
+    </div>
+  </div>
+
 <div class='hourly_tweets'></div>
 
 <script>
