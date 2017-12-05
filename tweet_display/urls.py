@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^heatmap/$', views.heatmap, name='heatmap'),
     url(r'^timeline/$', views.timeline, name='timeline'),
     url(r'^overall_tweets/$', views.overall_tweets, name='overall_tweets'),
-    url(r'^location/$', views.location, name='location')
+    url(r'^location/$', views.location, name='location'),
+    url(r'^interactions/$', views.interactions, name='interactions')
 ]

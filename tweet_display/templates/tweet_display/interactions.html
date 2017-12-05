@@ -7,7 +7,7 @@
 <div class='gender_replies'></div>
 
 <script>
-d3.json('/tweet_display/gender_rt/', function(data) {
+d3.json('{% url 'gender_rt' %}', function(data) {
    data = MG.convert.date(data, 'date');
    MG.data_graphic({
      title: "retweets & gender",
@@ -25,7 +25,7 @@ d3.json('/tweet_display/gender_rt/', function(data) {
    });
 });
 
-d3.json('/tweet_display/gender_reply/', function(data) {
+d3.json('{% url 'gender_reply' %}', function(data) {
    data = MG.convert.date(data, 'date');
    MG.data_graphic({
      title: "replies & gender",
@@ -43,7 +43,7 @@ d3.json('/tweet_display/gender_reply/', function(data) {
    });
 });
 
-d3.json('/tweet_display/top_replies/', function(data) {
+d3.json('{% url 'top_replies' %}', function(data) {
    data = MG.convert.date(data, 'date');
    y_keys = Object.keys(data[0]);
    y_keys = y_keys.filter(function(item) {
@@ -68,3 +68,5 @@ d3.json('/tweet_display/top_replies/', function(data) {
 });
 
 </script>
+
+{% endblock %}

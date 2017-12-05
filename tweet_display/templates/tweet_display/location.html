@@ -29,7 +29,7 @@
 
 
 <script>
-  d3.json('/tweet_display/heatmap/', function(data) {
+  d3.json('{% url 'heatmap' %}', function(data) {
     var map = L.map('map').setView([30, 0], 2);
 
     var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -43,7 +43,7 @@
 
 
 <script>
-  d3.json('/tweet_display/timeline/', function(data) {
+  d3.json('{% url 'timeline' %}', function(data) {
     var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">' +
       'OpenStreetMap</a> contributors';

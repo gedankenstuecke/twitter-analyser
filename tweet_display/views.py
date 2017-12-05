@@ -45,3 +45,7 @@ def overall_tweets(request):
 def location(request):
     context = {}
     return render(request, 'tweet_display/location.html', context)
+
+def interactions(request):
+    context = {}
+    return render(request, 'tweet_display/interactions.html', context)

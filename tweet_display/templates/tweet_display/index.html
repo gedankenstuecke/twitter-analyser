@@ -2,40 +2,12 @@
 
 {% block content %}
 
-<style>
-    #map { width: 100%; height: 70%; }
-    body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
-    .ghbtns { position: relative; top: 4px; margin-left: 5px; }
-    a { color: #0077ff; }
-
-
-    #tlmap {
-      width: 100%;
-      height: 70%;
-    }
-    .leaflet-bottom.leaflet-left{
-      width: 100%;
-    }
-    .leaflet-control-container .leaflet-timeline-controls{
-      box-sizing: border-box;
-      width: 100%;
-      margin: 0;
-      margin-bottom: 15px;
-    }
-</style>
-
-<div class='gender_rt'></div>
-<div class='gender_replies'></div>
-<div class='hourly_tweets'></div>
-<div class='tweet_types'></div>
 <div class='overall_tweets'></div>
-<div class='top_replies'></div>
-<div id="map"></div>
-<div id="tlmap"></div>
-
+<div class='tweet_types'></div>
+<div class='hourly_tweets'></div>
 
 <script>
-  d3.json('hourly_tweets/', function(hdata) {
+  d3.json('{% url 'hourly_tweets' %}', function(hdata) {
     MG.data_graphic({
       title: "Tweets per Hour",
       description: "How much do you tweet per hour?",
@@ -57,46 +29,7 @@
       });
   });
 
-  d3.selectAll('.mg-year-marker text')
-    .attr('transform', 'translate(0, 8)');
-
-  d3.json('gender_rt/', function(data) {
-     data = MG.convert.date(data, 'date');
-     MG.data_graphic({
-       title: "retweets & gender",
-       description: "Gender distribution amongst retweets",
-       data: data,
-       width: 600,
-       height: 450,
-       right: 60,
-       full_width: true,
-       target: ".gender_rt",
-       x_accessor: "date",
-       y_accessor: ["male",'female'],
-       legend: ["male",'female'],
-       aggregate_rollover: true,
-     });
-  });
-
-  d3.json('gender_reply/', function(data) {
-     data = MG.convert.date(data, 'date');
-     MG.data_graphic({
-       title: "replies & gender",
-       description: "Gender distribution amongst replies",
-       data: data,
-       width: 600,
-       height: 450,
-       right: 60,
-       full_width: true,
-       target: ".gender_replies",
-       x_accessor: "date",
-       y_accessor: ["male",'female'],
-       legend: ["male",'female'],
-       aggregate_rollover: true,
-     });
-  });
-
-  d3.json('tweet_types/', function(data) {
+  d3.json('{% url 'tweet_types' %}', function(data) {
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
        title: "Tweet classifications",
@@ -119,31 +52,7 @@
      })
   });
 
-  d3.json('top_replies/', function(data) {
-     data = MG.convert.date(data, 'date');
-     y_keys = Object.keys(data[0]);
-     y_keys = y_keys.filter(function(item) {
-       return item !== 'date'
-     });
-     MG.data_graphic({
-       title: "top replies",
-       description: "top replies",
-       data: data,
-       width: 1200,
-       height: 650,
-       right: 100,
-       bottom: 80,
-       full_width: true,
-       target: ".top_replies",
-       x_accessor: "date",
-       y_accessor: y_keys,
-       legend: y_keys,
-       aggregate_rollover: true,
-       interpolate: d3.curveMonotoneX,
-     });
-  });
-
-  d3.json('overall_tweets/', function(data) {
+  d3.json('{% url 'overall_tweets' %}', function(data) {
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
        title: "Tweets per day",
@@ -159,57 +68,6 @@
        y_accessor: "tweets",
      });
   });
-
   </script>
 
-  <script>
-    d3.json('heatmap/', function(data) {
-      var map = L.map('map').setView([30, 0], 2);
-
-      var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      var heat = L.heatLayer(data,{'radius':15,'minOpacity':0.4}).addTo(map);
-    })
-  </script>
-
-
-
-  <script>
-    d3.json('timeline/', function(data) {
-      var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      var osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">' +
-        'OpenStreetMap</a> contributors';
-      var osm = L.tileLayer(osmUrl, {
-        maxZoom: 18,
-        attribution: osmAttrib,
-      });
-      var tlmap = L.map('tlmap', {
-        layers: [osm],
-        center: new L.LatLng(30,0),
-        zoom: 2,
-      });
-
-      var timelineControl = L.timelineSliderControl({
-        duration: 40000,
-        formatOutput: function(date){
-          return moment(date).format("YYYY-MM-DD");
-        }
-      });
-      var timeline = L.timeline(data, {
-        pointToLayer: function(data, latlng){
-          return L.circleMarker(latlng, {
-            radius: 5,
-            fillColor: "hsl(196, 100%, 60%)",
-            weight: 0,
-            opacity: 0.2
-            })
-          }
-      });
-      timelineControl.addTo(tlmap);
-      timelineControl.addTimelines(timeline);
-      timeline.addTo(tlmap);
-    });
-  </script>
 {% endblock %}
