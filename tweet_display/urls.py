@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^top_replies/$', views.top_replies, name='top_replies'),
     url(r'^heatmap/$', views.heatmap, name='heatmap'),
     url(r'^timeline/$', views.timeline, name='timeline'),
-    url(r'^overall_tweets/$', views.overall_tweets, name='overall_tweets')
+    url(r'^overall_tweets/$', views.overall_tweets, name='overall_tweets'),
+    url(r'^location/$', views.location, name='location')
 ]
