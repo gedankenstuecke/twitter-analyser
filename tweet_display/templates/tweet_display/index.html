@@ -54,18 +54,11 @@
           <code>retweets</code> of tweets done by other users.
           Last, but not least there are the good old <code>regular tweets</code>,
           which are neither a reply to anyone nor a retweet of tweet.
-
-          And of course 
-
-          really noisy: On some days we might hammer out one tweet after the other,
-          while on other days we don't get around to doing much tweeting at all.
-          There might be vacations, days where you're sick in bed etc. This can make
-          it very hard to see long-term trends.
         </p>
         <p>
           Again, this data might be very noisy due to short-time changes.
-          For this reason the data here was averaged to remove the noise.
-          This was done by applying a rolling average on a 180 day window.
+          For this reason the data was averaged to remove the noise as well.
+          This was done by applying the same rolling average on a 180 day window as above.
           This should make it much easier to see how one's
           behaviour changed over larger time-frames (In <code>pandas</code> this
           rolling average is created by
@@ -81,8 +74,39 @@
       </div>
     </div>
   </div>
-
-<div class='hourly_tweets'></div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class='hourly_tweets'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">When are tweets posted?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Different people have different styles in how they use Twitter. Some
+          are owls and tweet deep into the night, while others of us are larks
+          and send our first tweets out while the sun rises. And of course, there
+          might be differences between workdays and weekends.
+        </p>
+        <p>
+          Twitter does not save the local time in which a tweet was sent. Instead
+          it gives all dates and times in <code>UTC</code>. To get the correct local time
+          it is thus necessary to know the latitude/longitude from which a given
+          tweet was sent. Correspondingly our graph to the left is based purely on those
+          tweets for which a geo location is known.
+        </p>
+        <p>
+          In our graph to the left the <code>x-axis</code> gives us the hour of the
+          day in which tweets were sent the <code>y-axis</code> gives us the overall
+          number of (geotagged) tweets that were sent on a given workday or day of the weekend.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   d3.json('{% url 'hourly_tweets' %}', function(hdata) {
