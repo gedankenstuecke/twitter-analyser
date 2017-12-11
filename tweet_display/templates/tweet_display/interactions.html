@@ -36,8 +36,80 @@
   </div>
 </div>
 
-<div class='gender_rt'></div>
-<div class='gender_replies'></div>
+<div class="row">
+  <div class="col-md-8">
+    <div class='gender_replies'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">The gender breakdown for replies</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Twitter can be a highly gendered experience and there is
+          <a href="https://blogs.scientificamerican.com/voices/how-men-can-help-women-in-stem-shut-up-sit-back-and-listen/">
+            plenty of research showing that such biases overwhelmingly favor men
+          </a>. Other tools, like
+          <a href="https://twitterlytic.herokuapp.com/">
+            <i>Twitterlytic</i>
+          </a> allow you to find out how the gender breakdown is amongst the people
+          you follow and the people that follow you. By looking at a whole Twitter
+          archive we can have a look into whether interactions - replies and retweets -
+          are gender balanced as well.
+        </p>
+        <p>
+          The graph shows you the number of replies to Twitter users
+          that are classified as either <code>male</code> or <code>female</code>. The
+          classifications are predictions based on users' first names as
+          given in their Twitter accounts. The predictions itself are performed by the Python
+          package
+          <a href="https://github.com/lead-ratings/gender-guesser">
+            <code>gender_guesser</code>
+          </a>. It uses name/gender-frequencies from a larger text corpus.
+          <code>mostly male</code>, <code>mostly female</code>, <code>andy</code>
+          and <code>unknown</code> classifications are ignored.
+          To decrease the noise the daily values have been averaged by a daily
+          average over a 180 day window (<code>dataframe.rolling('180d').mean()</code>).
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class='gender_rt'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">The gender breakdown for retweets</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Even more interesting than whether replying to people might be gendered
+          <a href="https://blogs.scientificamerican.com/voices/how-men-can-help-women-in-stem-shut-up-sit-back-and-listen/">
+            can be the question which voices are being amplified
+          </a>.
+          On Twitter a good indicator of amplification are retweets. These can
+          be gender balanced or show biases, similarly to the replies to other users.
+        </p>
+        <p>
+          The graph shows you the number of retweets to Twitter users
+          that are classified as either <code>male</code> or <code>female</code>. The
+          classifications are again predictions made by the Python
+          package
+          <a href="https://github.com/lead-ratings/gender-guesser">
+            <code>gender_guesser</code>
+          </a>.
+          To decrease the noise the daily values have again been averaged by a daily
+          average over a 180 day window (<code>dataframe.rolling('180d').mean()</code>).
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 d3.json('{% url 'gender_rt' %}', function(data) {
@@ -84,7 +156,7 @@ d3.json('{% url 'top_replies' %}', function(data) {
    });
    MG.data_graphic({
      title: "top replies",
-     description: "top replies",
+     description: "Whom did you reply to most? And did this behavior change over time?",
      data: data,
      width: 1200,
      height: 450,
