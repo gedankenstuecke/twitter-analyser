@@ -112,7 +112,7 @@
   d3.json('{% url 'hourly_tweets' %}', function(hdata) {
     MG.data_graphic({
       title: "Tweets per Hour",
-      description: "How much do you tweet per hour?",
+      description: "At which hours do you post hour tweets?",
       data: hdata,
       width: 600,
       height: 450,

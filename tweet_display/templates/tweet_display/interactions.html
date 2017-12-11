@@ -2,7 +2,40 @@
 
 {% block content %}
 
-<div class='top_replies'></div>
+<div class="row">
+  <div class="col-md-8">
+    <div class='top_replies'></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">The most interactions</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Replying to someones tweets is the main way of interacting on Twitter.
+          The people we interact with can stay the same over large spans of time,
+          or they can change - reflecting different social networks and circles of
+          friends we move in.
+        </p>
+        <p>
+          The graph here shows you the <i>Top Five</i> people you have replied to
+          most, summed up for your total time on Twitter. To make the graph less
+          prone to noise the replies for each user are not given per day but are
+          summed up per quarter.
+        </p>
+        <p>
+          The <code>x-axis</code> thus lists individual
+          quarters since the sign-up to Twitter. They <code>y-axis</code> gives the
+          sum of replies for the individual users per quarter. The <i>Top Five</i>
+          people you replied to are color-coded and are also listed on the graph
+          when hovering over a given data point.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class='gender_rt'></div>
 <div class='gender_replies'></div>
 
@@ -54,7 +87,7 @@ d3.json('{% url 'top_replies' %}', function(data) {
      description: "top replies",
      data: data,
      width: 1200,
-     height: 650,
+     height: 450,
      right: 100,
      bottom: 80,
      full_width: true,
