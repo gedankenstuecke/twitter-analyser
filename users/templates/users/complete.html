@@ -1,0 +1,18 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+
+      <h1>One last step.</h1>
+      <p class="lead">
+        Thank you! We have your authorization from Open Humans.
+      </p>
+      <p>
+        This should have triggered a data transfer job that adds a demo
+        data file to Open Humans.
+      </p>
+      <p>
+        Check this out here:
+        <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>
+      </p>
+
+{% endblock %}

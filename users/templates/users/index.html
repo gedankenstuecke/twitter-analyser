@@ -1,0 +1,44 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+
+      <h1>Demo Data Source &rarr; Open Humans</h1>
+      <p class="lead">
+        Use this demo app to add demo project data to an
+        <a href="https://www.openhumans.org/">Open Humans</a> account.
+      </p>
+      <p class="lead">
+        Learn more by visiting:<br>
+        <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>
+      </p>
+      <h2>How it works</h2>
+      <ol>
+        <li><b>Click the button below</b><br>
+          This takes you to Open Humans.</li>
+        <li><b>Log in or create an Open Humans account</b><br>
+          Data will be added to this account.</li>
+        <li><b>Authorize this app in Open Humans</b><br>
+          This authorizes us to add data to your account.</li>
+        <li><b>Return and the app will add data.</b><br>
+          Demo data should be added to your Open Humans account.
+          You'll be able to access &amp; manage data here:
+          <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>
+        </li>
+      </ol>
+      {% if client_id %}
+      <a
+        class="btn btn-primary btn-lg"
+        href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code"
+        {% else %}
+        class="btn btn-default disabled"
+        {% endif %}
+        >
+        Start with Open Humans authorization
+      </a>
+      {% if not client_id %}
+      <p class="text-muted"><i>
+        This button is disabled because client_id hasn't been configured.
+      </i></p>
+      {% endif %}
+
+{%endblock%}

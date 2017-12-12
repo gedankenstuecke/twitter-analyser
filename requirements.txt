@@ -12,3 +12,4 @@ celery==4.1.0
 requests==2.18.4
 timezonefinder==2.1.2
 geojson==2.3.0
+arrow==0.12.0

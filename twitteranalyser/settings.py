@@ -15,6 +15,13 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Open Humans configuration
+OH_CLIENT_ID = os.getenv('OH_CLIENT_ID')
+OH_CLIENT_SECRET = os.getenv('OH_CLIENT_SECRET')
+OH_ACTIVITY_PAGE = os.getenv('OH_ACTIVITY_PAGE')
+OH_BASE_URL = 'https://www.openhumans.org'
+APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -24,7 +31,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECRET_KEY = ')r46i@!_#_j!!+xe)2+kbj#gxmrzwj&g24^2ke&e1o1nh=9zof'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tweet_display.apps.TweetDisplayConfig'
+    'tweet_display.apps.TweetDisplayConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [

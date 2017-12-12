@@ -19,6 +19,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^tweet_display/', include('tweet_display.urls')),
+    url(r'^users/', include('users.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(pattern_name='index', permanent=False))
 ]
