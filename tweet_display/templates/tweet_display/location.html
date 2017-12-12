@@ -23,8 +23,66 @@
     }
 </style>
 
-<div id="map"></div>
-<div id="tlmap"></div>
+<div class="row">
+  <div class="col-md-8">
+    <div id="map"></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Where have I been tweeting?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Tweets come with a lot of metadata these days. Amongst the most powerful
+          and/or interesting kinds is the location data that many of us attach
+          to our tweets. Twitter and Third-party Twitter clients allow
+          the use of exact latitude/longitude for the location-data that is
+          being associated with tweets. Thanks to this a Twitter archive can give
+          a good overview of where all those tweets have been sent from. Be it
+          tweets from our sofa, out of the office
+          or while traveling and posting the holiday snapshots.
+        </p>
+        <p>
+          This map visualizes all tweets out of the Twitter archive that have a latitude and longitude
+          attached to them. It converts them into a simple heatmap. Regions with many tweets
+          are shown in red, while regions with less tweets are given in blue. The exact scale
+          depends on the zoom level. Zoom in to see exactly where you sent all
+          these posts from. Can you identify the main places you post from?
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-md-8">
+    <div id="tlmap"></div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Tweet locations over time</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Not all tweets come with geo locations enabled. But all geotagged
+          tweets come with a time stamp of when they have been posted. This allows us
+          to add another dimension to these maps: The time when they were posted, enabling
+          us to have a movie that can serve as a proxy of movement across the globe.
+        </p>
+        <p>
+          Instead of converting the geotagged tweets into a heatmap, this map shows the
+          movement profile by turning a Twitter archive into an interactive map
+          visualization. Press play to start the movement. Each geotagged tweet will appear as a
+          pink blip on the map on the day it was posted. To make them more visible each tweet will stay
+          on the map for 28 days.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <script>
@@ -66,7 +124,7 @@
       pointToLayer: function(data, latlng){
         return L.circleMarker(latlng, {
           radius: 5,
-          fillColor: "hsl(196, 100%, 60%)",
+          fillColor: "hsl(304, 100%, 50%)",
           weight: 0,
           opacity: 0.2
           })
