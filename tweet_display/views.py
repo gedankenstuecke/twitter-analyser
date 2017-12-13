@@ -51,7 +51,7 @@ def gender_rt(request, oh_id):
 
 def gender_reply(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='gender_reply',
+        graph = Graph.objects.get(graph_type__exact='gender_reply',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -60,7 +60,7 @@ def gender_reply(request, oh_id):
 
 def hourly_tweets(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='hourly_tweets',
+        graph = Graph.objects.get(graph_type__exact='hourly_tweets',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -69,7 +69,7 @@ def hourly_tweets(request, oh_id):
 
 def tweet_types(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='tweet_types',
+        graph = Graph.objects.get(graph_type__exact='tweet_types',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -78,7 +78,7 @@ def tweet_types(request, oh_id):
 
 def top_replies(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='top_replies',
+        graph = Graph.objects.get(graph_type__exact='top_replies',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -87,7 +87,7 @@ def top_replies(request, oh_id):
 
 def heatmap(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='heatmap',
+        graph = Graph.objects.get(graph_type__exact='heatmap',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -96,7 +96,7 @@ def heatmap(request, oh_id):
 
 def timeline(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='timeline',
+        graph = Graph.objects.get(graph_type__exact='timeline',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
@@ -105,7 +105,7 @@ def timeline(request, oh_id):
 
 def overall_tweets(request, oh_id):
     if grant_access(request, oh_id):
-        graph = Graph.objects.filter(graph_type__exact='overall_tweets',
+        graph = Graph.objects.get(graph_type__exact='overall_tweets',
                                      open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
