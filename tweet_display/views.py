@@ -52,7 +52,7 @@ def gender_rt(request, oh_id):
 def gender_reply(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='gender_reply',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users')
@@ -61,7 +61,7 @@ def gender_reply(request, oh_id):
 def hourly_tweets(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='hourly_tweets',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')
@@ -70,7 +70,7 @@ def hourly_tweets(request, oh_id):
 def tweet_types(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='tweet_types',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')
@@ -79,7 +79,7 @@ def tweet_types(request, oh_id):
 def top_replies(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='top_replies',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')
@@ -88,7 +88,7 @@ def top_replies(request, oh_id):
 def heatmap(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='heatmap',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')
@@ -97,7 +97,7 @@ def heatmap(request, oh_id):
 def timeline(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='timeline',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')
@@ -106,7 +106,7 @@ def timeline(request, oh_id):
 def overall_tweets(request, oh_id):
     if grant_access(request, oh_id):
         graph = Graph.objects.get(graph_type__exact='overall_tweets',
-                                     open_humans_member__oh_id=oh_id)
+                                  open_humans_member__oh_id=oh_id)
         return HttpResponse(graph.graph_data, content_type='application/json')
     else:
         return redirect('/users/')

@@ -2,8 +2,6 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from .models import Graph
 from users.models import OpenHumansMember
-import json
-
 from .read_data import create_main_dataframe
 from .analyse_data import predict_gender, create_hourly_stats
 from .analyse_data import create_tweet_types, create_top_replies
@@ -23,7 +21,7 @@ def write_graph(dataframe, oh_user, graph_type, graph_desc,
         graph.graph_description = graph_desc
         graph.graph_data = str(json_object)
         graph.save()
-    except:
+    except Exception as e:
         graph.delete()
 
 
@@ -34,7 +32,7 @@ def write_json(json_object, oh_user, graph_type, graph_desc):
         graph.graph_description = graph_desc
         graph.graph_data = json_object
         graph.save()
-    except:
+    except Exception as e:
         graph.delete()
 
 

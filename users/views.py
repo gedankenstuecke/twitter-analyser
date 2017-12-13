@@ -85,10 +85,6 @@ def index(request):
     """
     Starting page for app.
     """
-    try:
-        print(request.user.openhumansmember.oh_id)
-    except:
-        pass
     context = {'client_id': settings.OH_CLIENT_ID,
                'oh_proj_page': settings.OH_ACTIVITY_PAGE}
     return render(request, 'users/index.html', context=context)
