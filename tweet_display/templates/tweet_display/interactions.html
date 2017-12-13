@@ -112,7 +112,7 @@
 </div>
 
 <script>
-d3.json('{% url 'gender_rt' %}', function(data) {
+d3.json('{% url 'gender_rt' oh_id=oh_id %}', function(data) {
    data = MG.convert.date(data, 'date');
    MG.data_graphic({
      title: "retweets & gender",
@@ -130,7 +130,7 @@ d3.json('{% url 'gender_rt' %}', function(data) {
    });
 });
 
-d3.json('{% url 'gender_reply' %}', function(data) {
+d3.json('{% url 'gender_reply' oh_id=oh_id %}', function(data) {
    data = MG.convert.date(data, 'date');
    MG.data_graphic({
      title: "replies & gender",
@@ -148,7 +148,7 @@ d3.json('{% url 'gender_reply' %}', function(data) {
    });
 });
 
-d3.json('{% url 'top_replies' %}', function(data) {
+d3.json('{% url 'top_replies' oh_id=oh_id %}', function(data) {
    data = MG.convert.date(data, 'date');
    y_keys = Object.keys(data[0]);
    y_keys = y_keys.filter(function(item) {

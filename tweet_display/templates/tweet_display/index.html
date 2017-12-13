@@ -109,7 +109,7 @@
 </div>
 
 <script>
-  d3.json('{% url 'hourly_tweets' %}', function(hdata) {
+  d3.json('{% url 'hourly_tweets' oh_id=oh_id %}', function(hdata) {
     MG.data_graphic({
       title: "Tweets per Hour",
       description: "At which hours do you post hour tweets?",
@@ -131,7 +131,7 @@
       });
   });
 
-  d3.json('{% url 'tweet_types' %}', function(data) {
+  d3.json('{% url 'tweet_types' oh_id=oh_id %}', function(data) {
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
        title: "Tweet classifications",
@@ -154,7 +154,7 @@
      })
   });
 
-  d3.json('{% url 'overall_tweets' %}', function(data) {
+  d3.json('{% url 'overall_tweets' oh_id=oh_id %}', function(data) {
      data = MG.convert.date(data, 'date');
      MG.data_graphic({
        title: "Tweets per day",

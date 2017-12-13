@@ -39,6 +39,7 @@ class OpenHumansMember(models.Model):
     access_token = models.CharField(max_length=256)
     refresh_token = models.CharField(max_length=256)
     token_expires = models.DateTimeField()
+    public = models.BooleanField(default=False)
 
     @staticmethod
     def get_expiration(expires_in):
