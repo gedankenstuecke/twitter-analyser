@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='graph',
             name='open_humans_member',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='users.OpenHumansMember'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='users.OpenHumansMember'),
             preserve_default=False,
         ),
     ]
