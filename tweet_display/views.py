@@ -9,6 +9,8 @@ from .helper import grant_access
 
 def index(request, oh_id=None):
     context = {'section': 'general'}
+    if oh_id is not None:
+        context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         return render(request, 'tweet_display/index.html', context)
@@ -18,6 +20,8 @@ def index(request, oh_id=None):
 
 def location(request, oh_id=None):
     context = {'section': 'location'}
+    if oh_id is not None:
+        context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         return render(request, 'tweet_display/location.html', context)
@@ -27,6 +31,8 @@ def location(request, oh_id=None):
 
 def interactions(request, oh_id=None):
     context = {'section': 'interactions'}
+    if oh_id is not None:
+        context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         return render(request, 'tweet_display/interactions.html', context)

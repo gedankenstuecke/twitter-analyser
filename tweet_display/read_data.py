@@ -10,23 +10,26 @@ import pandas as pd
 import requests
 
 
-#tzwhere_ = tzwhere.tzwhere()
+# tzwhere_ = tzwhere.tzwhere()
 tzf = TimezoneFinder()
 
 
-### READ JSON FILES FROM TWITTER ARCHIVE!
+# READ JSON FILES FROM TWITTER ARCHIVE!
 
 def check_hashtag(single_tweet):
     '''check whether tweet has any hashtags'''
     return len(single_tweet['entities']['hashtags']) > 0
 
+
 def check_media(single_tweet):
     '''check whether tweet has any media attached'''
-    return len(single_tweet['entities']['media' ]) > 0
+    return len(single_tweet['entities']['media']) > 0
+
 
 def check_url(single_tweet):
     '''check whether tweet has any urls attached'''
     return len(single_tweet['entities']['urls']) > 0
+
 
 def check_retweet(single_tweet):
     '''
@@ -38,7 +41,8 @@ def check_retweet(single_tweet):
         return (single_tweet['retweeted_status']['user']['screen_name'],
                 single_tweet['retweeted_status']['user']['name'])
     else:
-        return (None,None)
+        return (None, None)
+
 
 def check_coordinates(single_tweet):
     '''
@@ -50,7 +54,8 @@ def check_coordinates(single_tweet):
         return (single_tweet['geo']['coordinates'][0],
                 single_tweet['geo']['coordinates'][1])
     else:
-        return (None,None)
+        return (None, None)
+
 
 def check_reply_to(single_tweet):
     '''
@@ -64,22 +69,24 @@ def check_reply_to(single_tweet):
             if user['screen_name'] == single_tweet['in_reply_to_screen_name']:
                 name = user['name']
                 break
-        return (single_tweet['in_reply_to_screen_name'],name)
+        return (single_tweet['in_reply_to_screen_name'], name)
     else:
-        return (None,None)
+        return (None, None)
 
-def convert_time(coordinates,time_utc):
+
+def convert_time(coordinates, time_utc):
     '''
     Does this tweet have a geo location? if yes
     we can easily convert the UTC timestamp to true local time!
     otherwise return nones
     '''
     if coordinates[0] and coordinates[1]:
-        timezone_str = tzf.timezone_at(lat=coordinates[0],lng=coordinates[1])
+        timezone_str = tzf.timezone_at(lat=coordinates[0], lng=coordinates[1])
         if timezone_str:
             timezone = pytz.timezone(timezone_str)
-            time_obj_local = datetime.datetime.astimezone(time_utc,timezone)
+            time_obj_local = datetime.datetime.astimezone(time_utc, timezone)
             return time_obj_local
+
 
 def create_dataframe(tweets):
     '''
@@ -101,11 +108,14 @@ def create_dataframe(tweets):
     text = []
     # iterate over all tweets and extract data
     for single_tweet in tweets:
-        utc_time.append(datetime.datetime.strptime(single_tweet['created_at'],'%Y-%m-%d %H:%M:%S %z'))
+        utc_time.append(datetime.datetime.strptime(single_tweet['created_at'],
+                                                   '%Y-%m-%d %H:%M:%S %z'))
         coordinates = check_coordinates(single_tweet)
         latitude.append(coordinates[0])
         longitude.append(coordinates[1])
-        local_time.append(convert_time(coordinates,datetime.datetime.strptime(single_tweet['created_at'],'%Y-%m-%d %H:%M:%S %z')))
+        local_time.append(convert_time(coordinates,
+                                       datetime.datetime.strptime(single_tweet['created_at'],
+                                                                  '%Y-%m-%d %H:%M:%S %z')))
         hashtag.append(check_hashtag(single_tweet))
         media.append(check_media(single_tweet))
         url.append(check_url(single_tweet))
@@ -117,21 +127,22 @@ def create_dataframe(tweets):
         reply_name.append(reply[1])
         text.append(single_tweet['text'])
     # convert the whole shebang into a pandas dataframe
-    dataframe = pd.DataFrame(data= {
-                    'utc_time' : utc_time,
-                    'local_time' : local_time,
-                    'latitude' : latitude,
-                    'longitude' : longitude,
-                    'hashtag' : hashtag,
-                    'media' : media,
-                    'url' : url,
-                    'retweet_user_name' : retweet_user_name,
-                    'retweet_name' : retweet_name,
-                    'reply_user_name' : reply_user_name,
-                    'reply_name' : reply_name,
-                    'text' : text
+    dataframe = pd.DataFrame(data={
+                            'utc_time': utc_time,
+                            'local_time': local_time,
+                            'latitude': latitude,
+                            'longitude': longitude,
+                            'hashtag': hashtag,
+                            'media': media,
+                            'url': url,
+                            'retweet_user_name': retweet_user_name,
+                            'retweet_name': retweet_name,
+                            'reply_user_name': reply_user_name,
+                            'reply_name': reply_name,
+                            'text': text
     })
     return dataframe
+
 
 def read_files(zip_url):
     tf = tempfile.NamedTemporaryFile()
@@ -139,8 +150,8 @@ def read_files(zip_url):
     tf.write(requests.get(zip_url).content)
     zf = zipfile.ZipFile(tf.name)
     print('reading index')
-    with zf.open('data/js/tweet_index.js','r') as f:
-        f  = io.TextIOWrapper(f)
+    with zf.open('data/js/tweet_index.js', 'r') as f:
+        f = io.TextIOWrapper(f)
         d = f.readlines()[1:]
         d = "[{" + "".join(d)
         json_files = json.loads(d)
@@ -149,7 +160,7 @@ def read_files(zip_url):
     for single_file in json_files:
         print('read ' + single_file['file_name'])
         with zf.open(single_file['file_name']) as f:
-            f  = io.TextIOWrapper(f)
+            f = io.TextIOWrapper(f)
             d = f.readlines()[1:]
             d = "".join(d)
             tweets = json.loads(d)
@@ -157,12 +168,13 @@ def read_files(zip_url):
             data_frames.append(df_tweets)
     return data_frames
 
+
 def create_main_dataframe(zip_url='http://ruleofthirds.de/test_archive.zip'):
     print('reading files')
     dataframes = read_files(zip_url)
     print('concatenating...')
     dataframe = pd.concat(dataframes)
-    dataframe = dataframe.sort_values('utc_time',ascending=False)
+    dataframe = dataframe.sort_values('utc_time', ascending=False)
     dataframe = dataframe.set_index('utc_time')
     dataframe = dataframe.replace(to_replace={
                                     'url': {False: None},

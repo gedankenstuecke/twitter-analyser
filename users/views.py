@@ -110,10 +110,11 @@ def complete(request):
         # Log in the user.
         # (You may want this if connecting user with another OAuth process.)
         user = oh_member.user
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        login(request, user,
+              backend='django.contrib.auth.backends.ModelBackend')
 
         # Initiate a data transfer task, then render 'complete.html'.
-        print('congratulations, you havebeen logged in!')
+        print('congratulations, you have been logged in!')
         import_data.delay(oh_member.oh_id)
         context = {'oh_id': oh_member.oh_id,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE}
