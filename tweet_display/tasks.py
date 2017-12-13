@@ -38,6 +38,12 @@ def write_json(json_object, oh_user, graph_type, graph_desc):
         graph.delete()
 
 
+def delete_old_data(oh_user_id):
+    graphs = Graph.objects.filter(open_humans_member__oh_id=oh_user_id)
+    for graph in graphs:
+        graph.delete()
+
+
 @shared_task
 def xsum(numbers):
     return sum(numbers)
@@ -46,6 +52,7 @@ def xsum(numbers):
 @shared_task
 def import_data(oh_user_id, url='http://ruleofthirds.de/test_archive.zip'):
     oh_user = OpenHumansMember.objects.get(oh_id=oh_user_id)
+    delete_old_data(oh_user_id)
     dataframe = create_main_dataframe(url)
     retweet_gender = predict_gender(dataframe, 'retweet_name', '180d')
     write_graph(retweet_gender, oh_user, 'gender_rt', 'retweets by gender')
