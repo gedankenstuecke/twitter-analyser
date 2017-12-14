@@ -13,6 +13,7 @@ def index(request, oh_id=None):
         context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
+        context['link_target'] = context['oh_id']
         return render(request, 'tweet_display/index.html', context)
     else:
         return redirect('/users/')
