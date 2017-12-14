@@ -27,7 +27,7 @@ OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
 OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
-APP_PROJ_PAGE = 'https://www.openhumans.org/activity/twariv/'
+APP_PROJ_PAGE = 'https://www.openhumans.org/activity/twitter-archive-analyzer/'
 
 # Set up logging.
 logger = logging.getLogger(__name__)

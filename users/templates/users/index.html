@@ -52,7 +52,9 @@
             </div>
             <div class="panel-body">
               <p>
-                You bet you can! You will get a general analysis of your tweet behavior,
+                You bet you can! Head to our <a href="{% url 'public_data' %}">already public visualizations</a>
+                to see how the archives of other users have been visualized.
+                You will get a general analysis of your tweet behavior,
                 a breakdown of your interactions over time as well as maps that show from where
                 you tweet.
               </p>
@@ -65,9 +67,9 @@
             <div class="panel-body">
               <p>
                 The short answer: No. The longer answer: No, unless you decide that
-                you want to make this data public, then you can head over to
+                you want to make this data public. If that is the case then you can head over to
                 <a href="{{ oh_proj_page }}">Open Humans</a>.
-                and make the archive data publicly available.
+                and make the full archive data publicly available.
               </p>
             </div>
           </div>
@@ -78,10 +80,13 @@
             <div class="panel-body">
               <p>
                 The same short answer: No. The longer answer: No, unless you decide that
-                you want to make this data public, then choose to do so right here on the website.
-                You will get URLs that allow you to share the visualizations with others.
-                You can also choose to make the
-                graphs private again at any point later on.
+                you want to make this data public. If you do so, the
+                graphs will <a href="{% url 'public_data' %}">be public visualizations</a>
+                right here on the website.
+                You will also get URLs that allow you to share the visualizations with others.
+                <br/>You can also choose to make the
+                graphs private again at any point later on. By the way: You can make your graphs publicly
+                available without publicly sharing your full archive.
               </p>
             </div>
           </div>
