@@ -1,0 +1,78 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Who's running this?</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-5">
+            {% load static %}
+            <img src="{% static "profile.jpg"%}"  style="width:150px"/>
+          </div>
+          <div class="col-md-7">
+            <p>
+            The site is hosted and run by <strong><a href="http://www.ruleofthirds.de">
+              Bastian Greshake Tzovaras</a></strong>. When he is not diving in the data of Twitter archives
+              he is tweeting himself at <strong>
+                <a href="https://twitter.com/gedankenstuecke">@gedankenstuecke</a></strong>,
+                busy as Director of Research of
+                <strong><a href="https://openhumans.org">Open Humans</a></strong>
+                and co-founder of
+                <strong><a href="https://opensnp.org">openSNP</a></strong>.
+              </p>
+              <p>
+                If you want to be in touch with Bastian you can reach him at bastian@openhumans.org
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">You did this all alone?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Good point. I really didn't. There were people who directly and indirectly helped in making them.
+          Because of this <strong>Thanks go to:</strong>
+        </p>
+        <p>
+          <strong><a href="https://twitter.com/madprime">Madeleine Price Ball</a></strong>, Executive
+          Director of Open Humans, helped with implementing the file-upload code that pushes the uploaded
+          data to Open Humans.
+        </p>
+        <p>
+          Much of the map-based JavaScript stuff that is implemented here are remnants of
+            a great workshop that <strong><a href="https://twitter.com/leejoeyk">Joey Lee</a></strong> gave
+            at <em>Mozfest 2016</em>!
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">You missed a cool visualization!</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          I'm pretty sure that I missed something cool that could be done with <em>Twitter Archives</em>.
+          You can always let me know what I missed. But even better: This whole thing is <a href="https://github.com/gedankenstuecke/twitter-analyser/">open source</a>. So you can
+          <a href="https://github.com/gedankenstuecke/twitter-analyser/issues">open an issue on GitHub</a> (thanks for that) or even directly <a href="https://github.com/gedankenstuecke/twitter-analyser/pulls">contribute a pull request</a> that adds the data
+          visualization that you're missing!
+        </p>
+        <p>
+          Even better: If you have a great idea that would substantially extend the <font color="#1DA1F2">Tw</font>Arχiv
+          you can even be paid for doing so:
+          <strong><a href="https://www.openhumans.org/grants/">Open Humans offers grants of $5,000 for the creation of projects.</a></strong>
+
+
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

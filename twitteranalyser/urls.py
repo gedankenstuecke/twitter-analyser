@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+from . import views
 
 urlpatterns = [
     url(r'^tweet_display/', include('tweet_display.urls')),
@@ -23,4 +24,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(pattern_name='user_home',
                                     permanent=False)),
+    url(r'^about/$', views.about, name='about'),
+
 ]
