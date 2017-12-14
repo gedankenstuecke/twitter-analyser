@@ -112,6 +112,7 @@
     </div>
   </div>
 </div>
+{% include 'tweet_display/partials/graph_buttons.html' %}
 
 <script>
   d3.json('{% url 'hourly_tweets' oh_id=oh_id %}', function(hdata) {

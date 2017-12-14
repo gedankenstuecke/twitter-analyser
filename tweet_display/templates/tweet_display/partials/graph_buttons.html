@@ -1,0 +1,8 @@
+<center>
+<div class="btn-group" role="group" aria-label="...">
+  <a href="{% url 'index_w_id' oh_id %}" class="btn btn-default {% if section == 'general' %}active{%endif%}">General graphs</a>
+  <a href="{% url 'interactions_w_id' oh_id %}" class="btn btn-default {% if section == 'interactions' %}active{%endif%}">Interactions</a>
+  <a href="{% url 'location_w_id' oh_id %}" class="btn btn-default {% if section == 'location' %}active{%endif%}">Location</a>
+</div>
+</center>
+{% if section == 'interactions' %}active{%endif%}

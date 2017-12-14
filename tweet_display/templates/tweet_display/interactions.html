@@ -116,6 +116,7 @@
     </div>
   </div>
 </div>
+{% include 'tweet_display/partials/graph_buttons.html' %}
 
 <script>
 d3.json('{% url 'gender_rt' oh_id=oh_id %}', function(data) {
