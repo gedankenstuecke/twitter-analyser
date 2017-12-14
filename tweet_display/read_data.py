@@ -148,6 +148,7 @@ def read_files(zip_url):
     tf = tempfile.NamedTemporaryFile()
     print('downloading files')
     tf.write(requests.get(zip_url).content)
+    tf.flush()
     zf = zipfile.ZipFile(tf.name)
     print('reading index')
     with zf.open('data/js/tweet_index.js', 'r') as f:

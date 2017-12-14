@@ -79,23 +79,31 @@
 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Upload new archive</h3>
+        <h3 class="panel-title">Upload{% if has_data %} new{% endif %} archive</h3>
       </div>
       <div class="panel-body">
-      <strong>FORM GOES HERE</strong>.
-      <p>
-        You want to update the Twitter archive that is stored on Open Humans with a newer copy?
-        Just enter the file in the form above and you're good to go.
-      </p>
+        {% include 'users/partials/upload_form.html' %}
+        <p>
+          {% if has_data %}
+          You want to replace the Twitter archive that is stored on Open Humans with a newer copy?
+          {% else %}
+          We first need a copy of your Twitter archive loaded on Open Humans to do analysis.
+          {% endif %}
+          Just enter the file in the form above and you're good to go.
+        </p>
       </div>
     </div>
 
+    {% if has_data %}
     <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">Regenerate graphs</h3>
       </div>
       <div class="panel-body">
-      <button type="button" class="btn btn-warning">Regenerate</button>
+        <form method="post" action="{% url 'regenerate' %}">
+          {% csrf_token %}
+          <input class="btn btn-warning" type="submit" value="Regenerate">
+        </form>
       <p>
         Sometimes the generation of the graphs fails (sorry for that). Press the button above
         and we will use your currently uploaded archive to generate the graphs anew, hopefully
@@ -103,6 +111,7 @@
       </p>
       </div>
     </div>
+    {% endif %}
 
     <div class="panel panel-info">
       <div class="panel-heading">
