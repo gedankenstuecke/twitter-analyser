@@ -1,6 +1,6 @@
 import requests
-
 from .models import OpenHumansMember
+from .models import Graph
 
 
 def grant_access(request, oh_id):
@@ -33,3 +33,13 @@ def get_current_user(request):
     if request.user.is_authenticated:
         return request.user.openhumansmember.oh_id
     return None
+
+
+def check_graphs(graph_types, oh_id):
+    graphs_ready = []
+    for graph in graph_types:
+        found = Graph.objects.filter(graph_type__exact=graph,
+                                     open_humans_member__oh_id=oh_id)
+        if found:
+            graphs_ready.append(graph)
+    return graphs_ready

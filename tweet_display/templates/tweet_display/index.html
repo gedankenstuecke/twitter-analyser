@@ -9,7 +9,11 @@
 {%endif%}
 <div class="row">
   <div class="col-md-8">
+    {%if 'overall_tweets' in graphs%}
     <div class='overall_tweets'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -45,7 +49,11 @@
 </div>
 <div class="row">
   <div class="col-md-8">
+    {%if 'tweet_types' in graphs%}
     <div class='tweet_types'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -82,7 +90,11 @@
 </div>
 <div class="row">
   <div class="col-md-8">
+    {%if 'hourly_tweets' in graphs%}
     <div class='hourly_tweets'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">

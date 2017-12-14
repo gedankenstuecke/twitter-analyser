@@ -10,7 +10,11 @@
 
 <div class="row">
   <div class="col-md-8">
+    {%if 'top_replies' in graphs%}
     <div class='top_replies'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -44,7 +48,11 @@
 
 <div class="row">
   <div class="col-md-8">
+    {%if 'gender_reply' in graphs%}
     <div class='gender_replies'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -85,7 +93,11 @@
 
 <div class="row">
   <div class="col-md-8">
+    {%if 'gender_rt' in graphs%}
     <div class='gender_rt'></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">

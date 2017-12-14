@@ -30,7 +30,11 @@
 
 <div class="row">
   <div class="col-md-8">
+    {%if 'heatmap' in graphs%}
     <div id="map"></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">
@@ -62,7 +66,11 @@
 <br/>
 <div class="row">
   <div class="col-md-8">
+    {%if 'timeline' in graphs%}
     <div id="tlmap"></div>
+    {%else%}
+    {% include 'tweet_display/partials/graph_in_making.html' %}
+    {%endif%}
   </div>
   <div class="col-md-4">
     <div class="panel panel-default">

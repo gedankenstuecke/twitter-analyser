@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import Graph
-from .helper import grant_access, get_current_user
+from .helper import grant_access, get_current_user, check_graphs
 
 # Create your views here.
 
@@ -14,6 +14,8 @@ def index(request, oh_id=None):
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         context['current_user_oh_id'] = get_current_user(request)
+        graphs = ['overall_tweets', 'hourly_tweets', 'tweet_types']
+        context['graphs'] = check_graphs(graphs, context['oh_id'])
         return render(request, 'tweet_display/index.html', context)
     else:
         return redirect('/users/')
@@ -26,6 +28,8 @@ def location(request, oh_id=None):
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         context['current_user_oh_id'] = get_current_user(request)
+        graphs = ['timeline', 'heatmap']
+        context['graphs'] = check_graphs(graphs, context['oh_id'])
         return render(request, 'tweet_display/location.html', context)
     else:
         return redirect('/users/')
@@ -38,6 +42,8 @@ def interactions(request, oh_id=None):
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
         context['current_user_oh_id'] = get_current_user(request)
+        graphs = ['gender_rt', 'gender_reply', 'top_replies']
+        context['graphs'] = check_graphs(graphs, context['oh_id'])
         return render(request, 'tweet_display/interactions.html', context)
     else:
         return redirect('/users/')
