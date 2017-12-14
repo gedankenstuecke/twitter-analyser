@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OH_CLIENT_ID = os.getenv('OH_CLIENT_ID')
 OH_CLIENT_SECRET = os.getenv('OH_CLIENT_SECRET')
 OH_ACTIVITY_PAGE = os.getenv('OH_ACTIVITY_PAGE')
+OH_REDIRECT_URI = os.getenv('OH_REDIRECT_URI', '')
 OH_BASE_URL = 'https://www.openhumans.org'
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
 

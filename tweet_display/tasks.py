@@ -2,6 +2,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from .models import Graph
 from users.models import OpenHumansMember
+from .helper import get_file_url
 from .read_data import create_main_dataframe
 from .analyse_data import predict_gender, create_hourly_stats
 from .analyse_data import create_tweet_types, create_top_replies
@@ -48,7 +49,13 @@ def xsum(numbers):
 
 
 @shared_task
-def import_data(oh_user_id, url='http://ruleofthirds.de/test_archive.zip'):
+def import_data(oh_user_id):
+    url = get_file_url(oh_user_id)
+
+    # NOTE: Might want to handle this more gracefully, e.g. prompt file upload.
+    if not url:
+        raise ValueError('No file found in Open Humans.')
+
     oh_user = OpenHumansMember.objects.get(oh_id=oh_user_id)
     delete_old_data(oh_user_id)
     dataframe = create_main_dataframe(url)

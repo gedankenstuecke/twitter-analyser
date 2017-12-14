@@ -1,18 +1,27 @@
+import json
 import logging
 import os
+try:
+    from urllib2 import HTTPError
+except ImportError:
+    from urllib.error import HTTPError
 
 from django.conf import settings
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 import requests
 
-from .models import OpenHumansMember
-from django.contrib.auth.models import User
 from tweet_display.tasks import import_data
 
+from .models import OpenHumansMember
+from .forms import UploadFileForm
 
 # Open Humans settings
 OH_BASE_URL = 'https://www.openhumans.org'
+OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
+OH_DELETE_FILES = OH_API_BASE + '/project/files/delete/'
+OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
+OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
 APP_PROJ_PAGE = 'https://www.openhumans.org/activity/twitter-archive-analyzer/'
@@ -82,12 +91,69 @@ def oh_code_to_member(code):
     return None
 
 
+def delete_all_oh_files(oh_member):
+    """
+    Delete all current project files in Open Humans for this project member.
+    """
+    req = requests.post(
+        OH_DELETE_FILES,
+        params={'access_token': oh_member.get_access_token()},
+        data={'project_member_id': oh_member.oh_id,
+              'all_files': True})
+
+
+def upload_file_to_oh(oh_member, filehandle, metadata):
+    """
+    This demonstrates using the Open Humans "large file" upload process.
+    The small file upload process is simpler, but it can time out. This
+    alternate approach is required for large files, and still appropriate
+    for small files.
+    This process is "direct to S3" using three steps: 1. get S3 target URL from
+    Open Humans, 2. Perform the upload, 3. Notify Open Humans when complete.
+    """
+    # Remove any previous file - replace with this one.
+    delete_all_oh_files(oh_member)
+
+    # Get the S3 target from Open Humans.
+    upload_url = '{}?access_token={}'.format(
+        OH_DIRECT_UPLOAD, oh_member.get_access_token())
+    req1 = requests.post(
+        upload_url,
+        data={'project_member_id': oh_member.oh_id,
+              'filename': filehandle.name,
+              'metadata': json.dumps(metadata)})
+    if req1.status_code != 201:
+        raise HTTPError(upload_url, req1.status_code,
+                        'Bad response when starting file upload.')
+
+    # Upload to S3 target.
+    req2 = requests.put(url=req1.json()['url'], data=filehandle)
+    if req2.status_code != 200:
+        raise HTTPError(req1.json()['url'], req2.status_code,
+                        'Bad response when uploading to target.')
+
+    # Report completed upload to Open Humans.
+    complete_url = ('{}?access_token={}'.format(
+        OH_DIRECT_UPLOAD_COMPLETE, oh_member.get_access_token()))
+    req3 = requests.post(
+        complete_url,
+        data={'project_member_id': oh_member.oh_id,
+              'file_id': req1.json()['id']})
+    if req3.status_code != 200:
+        raise HTTPError(complete_url, req2.status_code,
+                        'Bad response when completing upload.')
+
+    #print('Upload done: "{}" for member {}.'.format(
+    #    os.path.basename(filehandle.name), oh_member.oh_id))
+
+
 def index(request):
     """
     Starting page for app.
     """
     context = {'client_id': settings.OH_CLIENT_ID,
-               'oh_proj_page': settings.OH_ACTIVITY_PAGE}
+               'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+               'redirect_uri': settings.OH_REDIRECT_URI}
     if request.user.is_authenticated:
         return redirect('dashboard')
     return render(request, 'users/index.html', context=context)
@@ -99,32 +165,44 @@ def complete(request):
     """
     logger.debug("Received user returning from Open Humans.")
 
-    # Exchange code for token.
-    # This creates an OpenHumansMember and associated User account.
-    code = request.GET.get('code', '')
-    oh_member = oh_code_to_member(code=code)
+    form = None
 
-    if oh_member:
+    if request.method == 'GET':
+        # Exchange code for token.
+        # This creates an OpenHumansMember and associated User account.
+        code = request.GET.get('code', '')
+        oh_member = oh_code_to_member(code=code)
+        if oh_member:
+            # Log in the user.
+            user = oh_member.user
+            login(request, user,
+                  backend='django.contrib.auth.backends.ModelBackend')
+        elif not request.user.is_authenticated:
+            logger.debug('Invalid code exchange. User returned to start page.')
+            return redirect('/')
+        else:
+            oh_member = request.user.openhumansmember
 
-        # Log in the user.
-        # (You may want this if connecting user with another OAuth process.)
-        user = oh_member.user
-        login(request, user,
-              backend='django.contrib.auth.backends.ModelBackend')
-
-        # Initiate a data transfer task, then render 'complete.html'.
-        # right now it defaults to just using the general twitter Archive
-        # of @gedankenstuecke that's already on an URL
-        # TODO: put in form for uploading zip archive instead.
-
-        import_data.delay(oh_member.oh_id)
+        form = UploadFileForm()
         context = {'oh_id': oh_member.oh_id,
-                   'oh_proj_page': settings.OH_ACTIVITY_PAGE}
+                   'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+                   'form': form}
         return render(request, 'users/complete.html',
                       context=context)
 
-    logger.debug('Invalid code exchange. User returned to starting page.')
-    return redirect('/')
+    elif request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            metadata = {'tags': ['twitter', 'twitter-archive'],
+                        'description': 'Twitter achive file.'}
+            upload_file_to_oh(
+                request.user.openhumansmember,
+                request.FILES['file'],
+                metadata)
+        else:
+            logger.debug('INVALID FORM')
+        import_data.delay(request.user.openhumansmember.oh_id)
+        return redirect('dashboard')
 
 
 def dashboard(request):
@@ -160,4 +238,10 @@ def access_switch(request):
         else:
             oh_member.public = True
         oh_member.save()
+    return redirect('dashboard')
+
+
+def regenerate_graphs(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        import_data.delay(request.user.openhumansmember.oh_id)
     return redirect('dashboard')

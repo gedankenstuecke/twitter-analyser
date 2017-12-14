@@ -38,7 +38,7 @@
             </li>
           </ol>
           <a class="btn btn-primary btn-lg"
-            href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code">
+            href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code{% if redirect_uri %}&redirect_uri={{redirect_uri}}{% endif %}">
               Get started
           </a>
         </div>

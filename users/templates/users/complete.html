@@ -6,9 +6,22 @@
       <p class="lead">
         Thank you! We have your authorization from Open Humans.
       </p>
-      <p>
-        <h2>UPLOAD FORM GOES HERE</h2>        
-      </p>
+      <div>
+        <form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
+          {% if form.errors %}
+          <div class="well">
+            <b>Errors</b><br>
+            {{ form.errors }}
+          </div>
+          {% endif %}
+          {% csrf_token %}
+          <p>
+            <b>Twitter archive file:</b><br>
+            <input type="file" name="file">
+          </p>
+          <input class="btn btn-primary" type="submit" value="Upload Twitter archive">
+        </form>
+      </div>
       <p>
         Check this out here:
         <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>

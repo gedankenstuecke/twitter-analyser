@@ -95,7 +95,10 @@
         <h3 class="panel-title">Regenerate graphs</h3>
       </div>
       <div class="panel-body">
-      <button type="button" class="btn btn-warning">Regenerate</button>
+        <form method="post" action="{% url 'regenerate' %}">
+          {% csrf_token %}
+          <input class="btn btn-warning" type="submit" value="Regenerate">
+        </form>
       <p>
         Sometimes the generation of the graphs fails (sorry for that). Press the button above
         and we will use your currently uploaded archive to generate the graphs anew, hopefully
