@@ -6,7 +6,25 @@
       <p class="lead">
         Thank you! We have your authorization from Open Humans.
       </p>
-      <div>
+      <p class="lead">
+        <b>Next we need your data!</b>
+      </p>
+      <p>
+        To get your Twitter achive file&hellip;
+      </p>
+      <ol>
+        <li>Go to your <b><a href="https://twitter.com/settings/account">Twitter account settings</a></b></li>
+        <li>Click <b>"Your Twitter data"</b></li>
+        <li>Confirm your password</li>
+        <li><b>Scroll to the bottom</b> and click <b>"Request your data"</b></li>
+        <li><b>Check your email</b> &ndash; you should soon get a <b>download link</b>!</li>
+      </ol>
+      <p>
+        Once you've downloaded your archive, you can upload it to your Open
+        Humans account using the form below. Then your data will be analyzed!
+      </p>
+      <div class="panel panel-default">
+        <div class="panel-body">
         <form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
           {% if form.errors %}
           <div class="well">
@@ -16,14 +34,16 @@
           {% endif %}
           {% csrf_token %}
           <p>
-            <b>Twitter archive file:</b><br>
-            <input type="file" name="file">
+            <b>Upload Twitter archive file:</b><br>
+            <input type="file" name="file" class="btn">
           </p>
           <input class="btn btn-primary" type="submit" value="Upload Twitter archive">
         </form>
+        </div>
       </div>
       <p>
-        Check this out here:
+        You can also visit this project's page on Open Humans to see any
+        data you've previously uploaded:
         <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>
       </p>
 
