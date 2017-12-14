@@ -25,11 +25,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', RedirectView.as_view(pattern_name='user_home',
                                     permanent=False)),
-    url(
-        r'^favicon.ico$',
-        RedirectView.as_view(
-            url=staticfiles_storage.url('favicon.ico'),
-            permanent=False),
-        name="favicon"
-    ),
 ]
