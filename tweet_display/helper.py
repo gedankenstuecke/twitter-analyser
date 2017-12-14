@@ -27,3 +27,9 @@ def get_file_url(oh_id):
         if len(data) > 0:
             return data[0]['download_url']
     return None
+
+
+def get_current_user(request):
+    if request.user.is_authenticated:
+        return request.user.openhumansmember.oh_id
+    return None

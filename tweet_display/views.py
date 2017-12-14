@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import Graph
-from .helper import grant_access
+from .helper import grant_access, get_current_user
 
 # Create your views here.
 
@@ -13,7 +13,7 @@ def index(request, oh_id=None):
         context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
-        context['link_target'] = context['oh_id']
+        context['current_user_oh_id'] = get_current_user(request)
         return render(request, 'tweet_display/index.html', context)
     else:
         return redirect('/users/')

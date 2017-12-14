@@ -2,6 +2,12 @@
 
 {% block content %}
 
+{% if oh_id == current_user_oh_id %}
+<div class="alert alert-info" role="alert">
+  These are your graphs. Currently they are
+  <em>{% if request.user.openhumansmember.public%}public{%else%}private{%endif%}</em>.
+</div>
+{%endif%}
 <div class="row">
   <div class="col-md-8">
     <div class='overall_tweets'></div>
