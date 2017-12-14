@@ -67,8 +67,59 @@
           Even better: If you have a great idea that would substantially extend the <font color="#1DA1F2">Tw</font>Arχiv
           you can even be paid for doing so:
           <strong><a href="https://www.openhumans.org/grants/">Open Humans offers grants of $5,000 for the creation of projects.</a></strong>
-
-
+          What I personally would love to see: Doing a Tweet-based sentiment analysis over time!
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h2>FAQ</h2>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Will my Twitter archive be public if I use <font color="#1DA1F2">Tw</font>Arχiv?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          The short answer: No. <font color="#1DA1F2">Tw</font>Arχiv uses <a href="https://www.openhumans.org/">Open Humans</a>
+          to store the data. By default Open Humans will not make your data publicly available
+          and will not share the data with anyone.
+        </p>
+        <p>
+          Having said this: Open Humans gives you the
+          option to make your data publicly available. To do this you can head over to
+          <a href="{{ oh_proj_page }}">Open Humans</a>. On the page you will find the option
+          to make your data fully public.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Will my visualizations that <font color="#1DA1F2">Tw</font>Arχiv generates be public?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          The same short answer: No. By default no one but you can access the graphs you see after your
+          login. But if you want to share them with your closest 3,000 friends on Twitter you can do so.
+          Just head to your <a href="{% url 'dashboard' %}">settings</a> and they are publicly available.
+        </p>
+        <p>
+          If you do this, your
+          graphs will <a href="{% url 'public_data' %}">be public visualizations</a>
+          right here on the website. You can also choose to make the
+          graphs private again at any point later on. Making your graphs on <font color="#1DA1F2">Tw</font>Arχiv
+          public or private does not share your Archive sharing on Open Humans.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Why does <font color="#1DA1F2">Tw</font>Arχiv not generate my graphs?!</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Reading in all of your archive might take a while, depending on how prolific a Twitter user you are.
+          Bastian's archive contains around 100,000 tweets and it easily takes some ~15 minutes to read in all that data
+          and generate the graphs. Just have some patience and come back after sending some more tweets.
         </p>
       </div>
     </div>
