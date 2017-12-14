@@ -25,20 +25,7 @@
       </p>
       <div class="panel panel-default">
         <div class="panel-body">
-        <form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
-          {% if form.errors %}
-          <div class="well">
-            <b>Errors</b><br>
-            {{ form.errors }}
-          </div>
-          {% endif %}
-          {% csrf_token %}
-          <p>
-            <b>Upload Twitter archive file:</b><br>
-            <input type="file" name="file" class="btn">
-          </p>
-          <input class="btn btn-primary" type="submit" value="Upload Twitter archive">
-        </form>
+          {% include 'users/partials/upload_form.html' %}
         </div>
       </div>
       <p>

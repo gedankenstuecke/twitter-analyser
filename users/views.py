@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 import requests
 
+from tweet_display.helper import get_file_url
 from tweet_display.tasks import import_data
 
 from .models import OpenHumansMember
@@ -212,11 +213,11 @@ def dashboard(request):
     """
     if request.user.is_authenticated:
         oh_member = request.user.openhumansmember
+        has_data = bool(get_file_url(oh_member.oh_id))
         context = {'client_id': settings.OH_CLIENT_ID,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE,
-                   'oh_member': oh_member}
-        # TODO: check for whether person as already uploaded a zip archive
-        # TODO: add form for uploading/replacing an archive!
+                   'oh_member': oh_member,
+                   'has_data': has_data}
 
         return render(request, 'users/dashboard.html', context=context)
     return redirect("/")
