@@ -1,0 +1,51 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h2>Public visualizations</h2>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Graphs</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+    {% for public_user in public_users %}
+      <tr>
+        <td>{{ public_user.oh_id|upper }}</td>
+        <td><a href="{% url 'index_w_id' public_user.oh_id %}">General 📈</a></td>
+        <td><a href="{% url 'interactions_w_id' public_user.oh_id %}">Interactions 🤝</a></td>
+        <td><a href="{% url 'location_w_id' public_user.oh_id %}">Locations 🗺</a></td>
+      </tr>
+    {% endfor %}
+      <tbody>
+    </table>
+
+    <nav aria-label="pagination">
+      <ul class="pagination">
+        {% if public_users.has_previous %}
+            <li><a href="?page=1">&laquo; first</a></li>
+            <li><a aria-label="Previous" href="?page={{ public_users.previous_page_number }}">previous</a></li>
+        {% endif %}
+            <li class="active"><a href='#'>Page {{ public_users.number }} of {{ public_users.paginator.num_pages }}</a></li>
+        {% if public_users.has_next %}
+            <li><a href="?page={{ public_users.next_page_number }}">next</a></li>
+            <li><a href="?page={{ public_users.paginator.num_pages }}">last &raquo;</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  <div class="col-md-6">
+    <p class="lead">
+      These users have made their visualizations publicly accessible (Thank you for that! 🎉). Click through them and see how
+      different users are using Twitter very differently from each other! 🐦 Interested enough that you want
+      to give it a try as well? <a href="{% url 'user_home'%}">Get started now</a>.
+    </p>
+  </div>
+</div>
+
+{%endblock%}

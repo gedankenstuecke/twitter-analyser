@@ -9,6 +9,8 @@ except ImportError:
 from django.conf import settings
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import requests
 
 from tweet_display.helper import get_file_url
@@ -25,7 +27,7 @@ OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
 OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
-APP_PROJ_PAGE = 'https://www.openhumans.org/activity/twitter-archive-analyzer/'
+APP_PROJ_PAGE = 'https://www.openhumans.org/activity/twariv/'
 
 # Set up logging.
 logger = logging.getLogger(__name__)
@@ -204,6 +206,25 @@ def complete(request):
             logger.debug('INVALID FORM')
         import_data.delay(request.user.openhumansmember.oh_id)
         return redirect('dashboard')
+
+
+def public_data(request):
+    public_user_list = OpenHumansMember.objects.filter(
+                        public=True).order_by(
+                        'oh_id')
+    paginator = Paginator(public_user_list, 20)  # Show 20 contacts per page
+    page = request.GET.get('page')
+    try:
+        public_users = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        public_users = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        public_users = paginator.page(paginator.num_pages)
+    return render(request, 'users/public_data.html',
+                  {'public_users': public_users,
+                   'section': 'public_data'})
 
 
 def dashboard(request):

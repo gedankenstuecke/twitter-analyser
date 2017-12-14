@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Welcome to the <font color="#1DA1F2">Tw</font>Arχiv</h2>
+<h1>Welcome to the <font color="#1DA1F2">Tw</font>Arχiv Analyzer</h2>
 <div class="alert alert-info" role="alert">🎉 You are successfully logged in. 🎉</div>
 
 <div class="row">
@@ -48,7 +48,8 @@
     <h2>Your Settings</h2>
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Public Graphs</h3>
+        <h3 class="panel-title">Public Graphs <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+</h3>
       </div>
       <div class="panel-body">
         {% if oh_member.public %}
@@ -59,7 +60,7 @@
         <p>
           Right now your graphs are <span class="label label-success">Public 🔗</span>.
           This means you can share
-          the links below with friends and they can look at your graphs.
+          the links to your graphs with friends and they can look at them.
           You can change this setting at any time. By the way: Making the
           graphs public does not make your Twitter archive public!
         </p>
@@ -79,7 +80,7 @@
 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Upload{% if has_data %} new{% endif %} archive</h3>
+        <h3 class="panel-title">Upload{% if has_data %} new{% endif %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> </h3>
       </div>
       <div class="panel-body">
         {% include 'users/partials/upload_form.html' %}
@@ -98,7 +99,8 @@
     {% if has_data %}
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Regenerate graphs</h3>
+        <h3 class="panel-title">Regenerate graphs <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+</h3>
       </div>
       <div class="panel-body">
         <form method="post" action="{% url 'regenerate' %}">
@@ -116,7 +118,7 @@
 
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Delete all graphs</h3>
+        <h3 class="panel-title">Delete all graphs <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </h3>
       </div>
       <div class="panel-body">
       <a href="{%url 'user.delete' %}" class="btn btn-danger">Delete graphs</a>

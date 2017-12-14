@@ -73,6 +73,9 @@
                   <li {% if section == 'home' %} class="active" {%endif%}>
                     <a href="{% url 'user_home' %}">Home</a>
                   </li>
+                  <li {% if section == 'public_data' %} class="active" {%endif%}>
+                    <a href="{% url 'public_data' %}">Public Visualizations</a>
+                  </li>
                   {% if graph_section %}
                   <li {% if section == 'general' %} class="active" {%endif%}>
                     {% if link_target %}
