@@ -2,10 +2,15 @@
 
 {% block content %}
 
+{% if oh_id == current_user_oh_id %}
+
+{% include 'tweet_display/partials/graph_status.html' %}
+
+{%endif%}
+
 <style>
     #map { width: 100%; height: 70%; }
     .ghbtns { position: relative; top: 4px; margin-left: 5px; }
-    a { color: #0077ff; }
 
 
     #tlmap {

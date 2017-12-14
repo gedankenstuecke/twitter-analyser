@@ -2,6 +2,12 @@
 
 {% block content %}
 
+{% if oh_id == current_user_oh_id %}
+
+{% include 'tweet_display/partials/graph_status.html' %}
+
+{%endif%}
+
 <div class="row">
   <div class="col-md-8">
     <div class='top_replies'></div>

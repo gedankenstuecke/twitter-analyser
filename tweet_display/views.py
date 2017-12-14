@@ -8,7 +8,7 @@ from .helper import grant_access, get_current_user
 
 
 def index(request, oh_id=None):
-    context = {'section': 'general'}
+    context = {'section': 'general', 'graph_section': True}
     if oh_id is not None:
         context['link_target'] = oh_id
     if grant_access(request, oh_id):
@@ -20,22 +20,24 @@ def index(request, oh_id=None):
 
 
 def location(request, oh_id=None):
-    context = {'section': 'location'}
+    context = {'section': 'location', 'graph_section': True}
     if oh_id is not None:
         context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
+        context['current_user_oh_id'] = get_current_user(request)
         return render(request, 'tweet_display/location.html', context)
     else:
         return redirect('/users/')
 
 
 def interactions(request, oh_id=None):
-    context = {'section': 'interactions'}
+    context = {'section': 'interactions', 'graph_section': True}
     if oh_id is not None:
         context['link_target'] = oh_id
     if grant_access(request, oh_id):
         context['oh_id'] = grant_access(request, oh_id)
+        context['current_user_oh_id'] = get_current_user(request)
         return render(request, 'tweet_display/interactions.html', context)
     else:
         return redirect('/users/')

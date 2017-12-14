@@ -217,7 +217,8 @@ def dashboard(request):
         context = {'client_id': settings.OH_CLIENT_ID,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'oh_member': oh_member,
-                   'has_data': has_data}
+                   'has_data': has_data,
+                   'section': 'home'}
 
         return render(request, 'users/dashboard.html', context=context)
     return redirect("/")
