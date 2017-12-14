@@ -150,3 +150,14 @@ def delete_account(request):
         oh_member.delete()
         request.user.delete()
     return redirect("/")
+
+
+def access_switch(request):
+    if request.user.is_authenticated:
+        oh_member = request.user.openhumansmember
+        if oh_member.public:
+            oh_member.public = False
+        else:
+            oh_member.public = True
+        oh_member.save()
+    return redirect('dashboard')

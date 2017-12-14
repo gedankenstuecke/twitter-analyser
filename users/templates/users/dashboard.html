@@ -54,7 +54,7 @@
         {% if oh_member.public %}
         <div class="btn-group" role="group" aria-label="...">
           <button type="button" disabled="disabled" class="btn btn-primary">Public</button>
-          <button type="button" class="btn btn-default">Private</button>
+          <a href="{%url 'user.access' %}" class="btn btn-default">Private</a>
         </div>
         <p>
           Right now your graphs are <span class="label label-success">Public 🔗</span>.
@@ -65,7 +65,7 @@
         </p>
         {% else %}
           <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default">Public</button>
+            <a href="{%url 'user.access' %}" class="btn btn-default">Public</a>
             <button type="button" disabled="disabled" class="btn btn-primary">Private</button>
           </div>
         <p>
