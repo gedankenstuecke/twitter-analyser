@@ -16,8 +16,6 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
-from django.contrib.staticfiles.storage import staticfiles_storage
-
 
 urlpatterns = [
     url(r'^tweet_display/', include('tweet_display.urls')),
