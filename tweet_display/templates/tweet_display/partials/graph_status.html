@@ -1,0 +1,11 @@
+<div class="alert alert-info" role="alert">
+  These are your graphs. Currently they are
+  {% if request.user.openhumansmember.public%}
+  <strong>public 🔗</strong>.
+  You can show them to people <a href="{% url 'index_w_id' oh_id %}">using this link</a>.
+  You can also <a href="{% url 'user_home' %}">make them private again</a>.
+  {%else%}
+  <strong>private 🚫</strong>.
+  You need to <a href="{% url 'user_home' %}">make them public</a> before you can link people to them.
+  {%endif%}
+</div>
