@@ -1,0 +1,124 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+
+<h1>Welcome to the Twitter Archive Analyzer</h2>
+<div class="alert alert-success" role="alert">🎉 You are successfully logged in. 🎉</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Your Graphs</h2>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title"><a href="{% url 'index_w_id' oh_member.oh_id %}">General 📈</a></h3>
+        </div>
+        <div class="panel-body">
+          <strong><a href="{% url 'index_w_id' oh_member.oh_id %}">General graphs</a></strong>,
+          show how the daily volume of tweets (and their type) changes over time,
+          as well as information on which time of the day tweets are sent.
+        </div>
+      </div>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title"><a href="{% url 'interactions_w_id' oh_member.oh_id %}">Interactions 🤝</a></h3>
+        </div>
+        <div class="panel-body">
+          Look at your <strong><a href="{% url 'interactions_w_id' oh_member.oh_id %}">interactions</a></strong>
+          on Twitter. Whom do you reply to most? And how is your gender balance when it
+          comes to replies and retweets?
+        </div>
+      </div>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title"><a href="{% url 'location_w_id' oh_member.oh_id %}">Locations 🗺</a></h3>
+        </div>
+        <div class="panel-body">
+          Look at the <strong><a href="{% url 'location_w_id' oh_member.oh_id %}">locations</a></strong>
+          from which you have tweeted. From where on the globe do you tweet most?
+          Your sofa? Your office? Some obscure mountain top?
+        </div>
+      </div>
+
+  </div>
+
+  <div class="col-md-6">
+    <h2>Your Settings</h2>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Public Graphs</h3>
+      </div>
+      <div class="panel-body">
+        {% if oh_member.public %}
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" disabled="disabled" class="btn btn-primary">Public</button>
+          <button type="button" class="btn btn-default">Private</button>
+        </div>
+        <p>
+          Right now your graphs are <span class="label label-success">Public 🔗</span>.
+          This means you can share
+          the links below with friends and they can look at your graphs.
+          You can change this setting at any time. By the way: Making the
+          graphs public does not make your Twitter archive public!
+        </p>
+        {% else %}
+          <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default">Public</button>
+            <button type="button" disabled="disabled" class="btn btn-primary">Private</button>
+          </div>
+        <p>
+          Right now your graphs are <span class="label label-danger">Private 🚫</span>.
+          This means you can't share these links with others. You can change this setting at any time.
+          By the way: Making the graphs public does not make your Twitter archive public!
+        </p>
+        {%endif%}
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Upload new archive</h3>
+      </div>
+      <div class="panel-body">
+      <strong>FORM GOES HERE</strong>.
+      <p>
+        You want to update the Twitter archive that is stored on Open Humans with a newer copy?
+        Just enter the file in the form above and you're good to go.
+      </p>
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Regenerate graphs</h3>
+      </div>
+      <div class="panel-body">
+      <button type="button" class="btn btn-warning">Regenerate</button>
+      <p>
+        Sometimes the generation of the graphs fails (sorry for that). Press the button above
+        and we will use your currently uploaded archive to generate the graphs anew, hopefully
+        fixing your problems.
+      </p>
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Delete all graphs</h3>
+      </div>
+      <div class="panel-body">
+      <a href="{%url 'user.delete' %}" class="btn btn-danger">Delete graphs</a>
+      <p>
+        You'd rather not have all of these graphs stored on our website? Fair enough,
+        press the button above and we'll remove your Twitter Archive Analyzer account
+        along with all graphs. (A reminder: This does not delete your Open Humans
+        account and/or data stored there.)
+      </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}

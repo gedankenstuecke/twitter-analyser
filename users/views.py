@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 import requests
 
 from .models import OpenHumansMember
+from django.contrib.auth.models import User
 from tweet_display.tasks import import_data
 
 
@@ -87,6 +88,8 @@ def index(request):
     """
     context = {'client_id': settings.OH_CLIENT_ID,
                'oh_proj_page': settings.OH_ACTIVITY_PAGE}
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, 'users/index.html', context=context)
 
 
@@ -110,7 +113,10 @@ def complete(request):
               backend='django.contrib.auth.backends.ModelBackend')
 
         # Initiate a data transfer task, then render 'complete.html'.
-        print('congratulations, you have been logged in!')
+        # right now it defaults to just using the general twitter Archive
+        # of @gedankenstuecke that's already on an URL
+        # TODO: put in form for uploading zip archive instead.
+
         import_data.delay(oh_member.oh_id)
         context = {'oh_id': oh_member.oh_id,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE}
@@ -119,3 +125,28 @@ def complete(request):
 
     logger.debug('Invalid code exchange. User returned to starting page.')
     return redirect('/')
+
+
+def dashboard(request):
+    """
+    Give options to delete account, make data public/private,
+    reupload archive, trigger new parsing of archive.
+    """
+    if request.user.is_authenticated:
+        oh_member = request.user.openhumansmember
+        context = {'client_id': settings.OH_CLIENT_ID,
+                   'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+                   'oh_member': oh_member}
+        # TODO: check for whether person as already uploaded a zip archive
+        # TODO: add form for uploading/replacing an archive!
+
+        return render(request, 'users/dashboard.html', context=context)
+    return redirect("/")
+
+
+def delete_account(request):
+    if request.user.is_authenticated:
+        oh_member = request.user.openhumansmember
+        oh_member.delete()
+        request.user.delete()
+    return redirect("/")
