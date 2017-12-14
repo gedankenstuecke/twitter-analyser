@@ -24,5 +24,6 @@ def get_file_url(oh_id):
     if req.status_code == 200 and 'data' in req.json():
         data = req.json()['data']
         # WARNING! This is assumes the first file encountered is what you want!
-        return data[0]['download_url']
+        if len(data) > 0:
+            return data[0]['download_url']
     return None
