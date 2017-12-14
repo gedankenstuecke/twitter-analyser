@@ -2,36 +2,36 @@
 
 {% block content %}
 
-      <h1>One last step.</h1>
+      <h1>One last step: Uploading your data</h1>
       <p class="lead">
         Thank you! We have your authorization from Open Humans.
       </p>
-      <p class="lead">
-        <b>Next we need your data!</b>
-      </p>
-      <p>
-        To get your Twitter achive file&hellip;
-      </p>
-      <ol>
-        <li>Go to your <b><a href="https://twitter.com/settings/account">Twitter account settings</a></b></li>
-        <li>Click <b>"Your Twitter data"</b></li>
-        <li>Confirm your password</li>
-        <li><b>Scroll to the bottom</b> and click <b>"Request your data"</b></li>
-        <li><b>Check your email</b> &ndash; you should soon get a <b>download link</b>!</li>
-      </ol>
-      <p>
-        Once you've downloaded your archive, you can upload it to your Open
-        Humans account using the form below. Then your data will be analyzed!
-      </p>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          {% include 'users/partials/upload_form.html' %}
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            To get your Twitter achive file&hellip;
+          </p>
+          <ol>
+            <li>Go to your <b><a href="https://twitter.com/settings/account">Twitter account settings</a></b></li>
+            <li><b>Scroll to the bottom</b> and click <b>"Request your archive"</b></li>
+            <li><b>Check your email</b> &ndash; you should soon get a <b>download link</b>!</li>
+          </ol>
+          <p>
+            Once you've downloaded your archive, you can upload it to your Open
+            Humans account using the form below. Then your data will be analyzed!
+          </p>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              {% include 'users/partials/upload_form.html' %}
+            </div>
+          </div>
+          <p>
+            You can also visit <a href="{{ oh_proj_page }}">this project's page on Open Humans </a>
+            to see any data you've previously uploaded.
+          </p>
         </div>
       </div>
-      <p>
-        You can also visit this project's page on Open Humans to see any
-        data you've previously uploaded:
-        <a href="{{ oh_proj_page }}">{{ oh_proj_page }}</a>
-      </p>
-
+          
 {% endblock %}

@@ -96,7 +96,7 @@ def delete_all_oh_files(oh_member):
     """
     Delete all current project files in Open Humans for this project member.
     """
-    req = requests.post(
+    requests.post(
         OH_DELETE_FILES,
         params={'access_token': oh_member.get_access_token()},
         data={'project_member_id': oh_member.oh_id,
@@ -144,7 +144,7 @@ def upload_file_to_oh(oh_member, filehandle, metadata):
         raise HTTPError(complete_url, req2.status_code,
                         'Bad response when completing upload.')
 
-    #print('Upload done: "{}" for member {}.'.format(
+    # print('Upload done: "{}" for member {}.'.format(
     #    os.path.basename(filehandle.name), oh_member.oh_id))
 
 
