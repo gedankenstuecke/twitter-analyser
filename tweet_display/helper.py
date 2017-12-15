@@ -1,5 +1,5 @@
 import requests
-from .models import OpenHumansMember
+from users.models import OpenHumansMember
 from .models import Graph
 
 

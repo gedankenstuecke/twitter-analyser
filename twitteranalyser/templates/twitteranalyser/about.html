@@ -123,6 +123,33 @@
         </p>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">I waited like, a really long time. But there are still no graphs!</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Sometimes things go wrong when reading in the files, sorry for that (also, did you follow the instructions to the letter?).
+          If you suspect that this is the case please head to your <a href="{% url 'dashboard' %}">settings</a> and trigger a
+          reprocessing of your data.
+        </p>
+        <p>
+          That didn't help either? Please email Bastian and you can jointly investigate what's going on.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">I tweeted a lot since the data upload. Can I update my data?</h3>
+      </div>
+      <div class="panel-body">
+        <p>
+          Absolutely. If you want to update your archive for a newer version you can just head to
+          your <a href="{% url 'dashboard' %}">settings</a> and upload a newer copy. We will automatically
+          delete the old files and replace everything with newer copies.
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 
