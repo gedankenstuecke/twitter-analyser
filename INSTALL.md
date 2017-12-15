@@ -41,8 +41,18 @@ arrow==0.12.0
 
 If you are using `heroku` in your development environment it should take care of installing the modules listed in `requirements.txt` automatically.
 
-### Start development environment
-I recommend using the `heroku-cli` interface to boot up both the `celery`-worker as well as the `gunicorn` webserver. You can install the CLI using `brew install heroku/brew/heroku` (or however that works on non-macs). If you are in the root directory of this repository and run `heroku local` it will use the `Procfile` to spawn local web & celery servers.
+## Create a Project on Open Humans
+We want to interface with Open Humans for our project. For this reason we need to create a research project on openhumans.org. After creating an account go to https://www.openhumans.org/direct-sharing/projects/manage/
+and generate a new project. The most important parts to get right are the `enrollment URL` and the `redirect URL`. For your development environment this should be the right URLs:
+
+```
+enrollment: http://127.0.0.1:5000/users/
+redirect: http://127.0.0.1:5000/users/complete # no trailing slash!
+```
+
+## Start development environment
+All good so far? Then we can now start developing in our local environment.
+I recommend using the `heroku-cli` interface to boot up both the `celery`-worker as well as the `gunicorn` webserver. You can install the CLI using `brew install heroku/brew/heroku` (or however that works on non-macs). If you are in the root directory of this repository and run `heroku local` it will use the `Procfile` to spawn local web & celery servers. If you've configured everything correctly you should be able to point your browser to `http://127.0.0.1:5000/` and see your very own copy of TwArχiv
 
 #### Heroku configuration
 `heroku` will try to read environment variables from `.env` for your local environment. Make sure you have such a file. It should contain the following keys:
@@ -59,3 +69,15 @@ APP_BASE_URL=http://127.0.0.1:5000/users # where is our app located? Open Humans
 
 PYTHONUNBUFFERED=true # make sure we can print to console
 ```
+
+This file contains private data that would allow other parties to take over your project. So make sure that you **don't commit this file to your Git repository**.
+
+## Deploy to `heroku` production
+Once it's set up it is as easy as running `git push heroku master`. For obvious reasons (see above) it won't have the `.env` file for setting the environment variables. For that reason you have to manually specify them for the production environment. The `heroku cli` makes this easy:
+
+```
+heroku config:set SECRET_KEY=foobar
+heroku config:set APP_BASE_URL=http://www.example.com
+```
+
+**You don't have to set the `REDIS_URL` and `DATABASE_URL` in production. This will be done by heroku!**
