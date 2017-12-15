@@ -187,7 +187,7 @@ def complete(request):
             oh_member = request.user.openhumansmember
 
         if get_file_url(oh_member.oh_id) is not None:
-            redirect('dashboard')
+            return redirect('dashboard')
 
         form = UploadFileForm()
         context = {'oh_id': oh_member.oh_id,
