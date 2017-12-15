@@ -9,7 +9,7 @@ def predict_gender(dataframe,column_name,rolling_frame='180d'):
     gender for a name-column where applicable
     returns two-column df w/ timestamp & gender
     '''
-    splitter = lambda x: x.split()[0]
+    splitter = lambda x: ''.join(x.split()[:1])
     gender_column = dataframe.loc[dataframe[column_name].notnull()][column_name].apply(
         splitter).apply(
         gender_guesser.get_gender)
