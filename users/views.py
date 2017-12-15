@@ -186,6 +186,9 @@ def complete(request):
         else:
             oh_member = request.user.openhumansmember
 
+        if bool(get_file_url(oh_member.oh_id)):
+            redirect('dashboard')
+
         form = UploadFileForm()
         context = {'oh_id': oh_member.oh_id,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE,
