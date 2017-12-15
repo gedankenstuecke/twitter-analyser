@@ -6,3 +6,4 @@ staticfiles
 twitter_archive/
 db.sqlite3
 dump.rdb
+.DS_Store
