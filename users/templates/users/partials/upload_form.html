@@ -64,7 +64,7 @@ function startUpload() {
     }
 }
 </script>
-
+{% csrf_token %}
 <div id='upload_form'>
 <form method="get" enctype="multipart/form-data">
   {% if form.errors %}
