@@ -106,4 +106,4 @@ def import_data(oh_user_id):
                     'all tweets over time')
     except:
         logger.error('overall tweets crashed')
-    message_success(oh_user.oh_id)
+    message_success(oh_user)
