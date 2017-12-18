@@ -43,3 +43,14 @@ def check_graphs(graph_types, oh_id):
         if found:
             graphs_ready.append(graph)
     return graphs_ready
+
+
+def message_success(oh_id):
+    subject = 'Your graphs are ready!'
+    message = 'Dear TwArxiv user,\nthe graphs generated from your Twitter \
+               archive are now ready for you. Go over to \
+               https://twtr-analyser.herokuapp.com/tweet_display/index/{} to \
+               view them'.format(oh_id)
+    message_url = 'https://www.openhumans.org/api/direct-sharing/project/message/?access_token={}'.format(oh_id)
+    requests.post(message_url, data={'subject': subject,
+                                     'message': message})
