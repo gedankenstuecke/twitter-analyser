@@ -20,7 +20,7 @@ from .models import OpenHumansMember
 from .forms import UploadFileForm
 
 # Open Humans settings
-OH_BASE_URL = 'https://www.openhumans.org'
+OH_BASE_URL = settings.OH_BASE_URL
 OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
 OH_DELETE_FILES = OH_API_BASE + '/project/files/delete/'
 OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
@@ -191,6 +191,7 @@ def complete(request):
 
         form = UploadFileForm()
         context = {'oh_id': oh_member.oh_id,
+                   'oh_member': oh_member,
                    'oh_proj_page': settings.OH_ACTIVITY_PAGE,
                    'form': form}
         return render(request, 'users/complete.html',
