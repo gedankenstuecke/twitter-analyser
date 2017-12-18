@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from .models import Graph
 from users.models import OpenHumansMember
-from .helper import get_file_url
+from .helper import get_file_url, message_success
 from .read_data import create_main_dataframe
 from .analyse_data import predict_gender, create_hourly_stats
 from .analyse_data import create_tweet_types, create_top_replies
@@ -106,3 +106,4 @@ def import_data(oh_user_id):
                     'all tweets over time')
     except:
         logger.error('overall tweets crashed')
+    message_success(oh_user.oh_id)
