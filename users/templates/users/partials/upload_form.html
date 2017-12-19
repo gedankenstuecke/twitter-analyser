@@ -44,7 +44,7 @@ function startUpload() {
                     trigger_graph_xhr.open('POST', "{% url 'regenerate' %}", true);
                     trigger_graph_xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     trigger_graph_xhr.send()
-                    var done = "<h3>Upload successful. You will get a message on <em>Open Humans</em> when your graphs are available.</h3>"
+                    var done = "<h3>Upload successful. You will get a message on <em>Open Humans</em> when your graphs are available.</h3> <small>(please also check your <em>SPAM</em> folder)</small>"
                     $("#upload_form").replaceWith('<div id="upload_form">'+done+'</div>');
                   } else {
                     console.log('finalizing went wrong')
