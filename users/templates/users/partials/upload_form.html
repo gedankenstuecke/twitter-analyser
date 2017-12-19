@@ -79,10 +79,16 @@ function startUpload() {
     (complete zip-file as downloaded)<br>
     <input id='file' type="file" name="file" class="btn">
   </p>
-  <input class="btn btn-primary" value="Upload Twitter archive" onClick="startUpload()">
+  <input class="btn btn-primary" value="Upload Twitter archive" onClick="startUpload()"></br></br>
   <p>
-    The analysis after the upload can take a while. We will message you through
-    the <em>Open Humans</em> system once your graphs are ready.
+    <small>The analysis after the upload can take a while. We will message you through
+    the <em>Open Humans</em> system once your graphs are ready.</small>
   </p>
 </form>
+<p>
+  <small>
+    The Javascript uploader has failed for some users in the past. You could try another browser
+    or <a href="{% url 'upload_old' %}">use the simpler upload form</a>.
+  </small>
+</p>
 </div>

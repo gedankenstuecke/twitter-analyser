@@ -83,7 +83,6 @@
         <h3 class="panel-title">Upload{% if has_data %} new{% endif %} <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> </h3>
       </div>
       <div class="panel-body">
-        {% include 'users/partials/upload_form.html' %}
         <p>
           {% if has_data %}
           You want to replace the Twitter archive that is stored on Open Humans with a newer copy?
@@ -91,8 +90,8 @@
           We first need a copy of your Twitter archive loaded on Open Humans to do analysis.
           {% endif %}
           Just enter the file in the form above and you're good to go.
-          (Depending on your tweet volume and resulting archive size the upload might take a while.)
         </p>
+        {% include 'users/partials/upload_form.html' %}
       </div>
     </div>
 

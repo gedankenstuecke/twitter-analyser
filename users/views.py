@@ -272,3 +272,9 @@ def regenerate_graphs(request):
     if request.method == 'POST' and request.user.is_authenticated:
         import_data.delay(request.user.openhumansmember.oh_id)
     return redirect('dashboard')
+
+
+def upload_old(request):
+    if request.user.is_authenticated:
+        return render(request, 'users/upload_old.html')
+    return redirect('dashboard')

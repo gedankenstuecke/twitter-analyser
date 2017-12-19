@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'access_switch/?$', views.access_switch, name='user.access'),
     url(r'regenerate/?$', views.regenerate_graphs, name='regenerate'),
     url(r'public_data/?$', views.public_data, name='public_data'),
-
+    url(r'^upload_simple/?$', views.upload_old, name='upload_old'),
 ]

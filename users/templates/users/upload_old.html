@@ -1,0 +1,40 @@
+{% extends 'tweet_display/application.html' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Upload Twitter archive file</h2>
+
+<form method="post" enctype="multipart/form-data" action="{% url 'complete' %}">
+  {% if form.errors %}
+  <div class="well">
+    <b>Errors</b><br>
+    {{ form.errors }}
+  </div>
+  {% endif %}
+  {% csrf_token %}
+  <p>
+    (complete zip-file as downloaded)<br>
+    <input type="file" name="file" class="btn">
+  </p>
+  <input class="btn btn-primary" type="submit" value="Upload Twitter archive">
+</form>
+
+</div>
+
+<div class="col-md-6">
+<p class="lead">
+  The analysis after the upload can take a while. We will message you through
+  the <em>Open Humans</em> system once your graphs are ready.
+</p>
+<p class="lead">
+  A word of warning: <strong>This uploader does not work well for large Twitter archives.</strong>
+  If an archive takes longer than 30 seconds to be uploaded the website
+  will time out. In these cases <a href="{% url "dashboard"%}">the use of the Javascript uploader</a> is preferred
+  as it does not have this limitation.
+</p>
+
+</div>
+
+{% endblock %}
