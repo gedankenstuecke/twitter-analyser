@@ -86,6 +86,13 @@
           To decrease the noise the daily values have been averaged by a daily
           average over a 180 day window (<code>dataframe.rolling('180d').mean()</code>).
         </p>
+        <p>
+          <small>Ideally these graphs would
+            <a href="https://emptysqua.re/blog/gender-of-twitter-users-i-follow/">
+              include non-binary folks</a>. Doing this is a bit trickier and thus a
+              <a href="https://github.com/gedankenstuecke/twitter-analyser/issues/20">work in progress</a>.
+          </small>
+        </p>
       </div>
     </div>
   </div>
@@ -124,6 +131,13 @@
           To decrease the noise the daily values have again been averaged by a daily
           average over a 180 day window (<code>dataframe.rolling('180d').mean()</code>).
         </p>
+        <p>
+          <small>Ideally these graphs would
+            <a href="https://emptysqua.re/blog/gender-of-twitter-users-i-follow/">
+              include non-binary folks</a>. Doing this is a bit trickier and thus a
+              <a href="https://github.com/gedankenstuecke/twitter-analyser/issues/20">work in progress</a>.
+          </small>
+        </p>
       </div>
     </div>
   </div>
@@ -144,7 +158,7 @@ d3.json('{% url 'gender_rt' oh_id=oh_id %}', function(data) {
      target: ".gender_rt",
      x_accessor: "date",
      y_accessor: ["male",'female'],
-     legend: ["male",'female'],
+     legend: ["men",'women'],
      aggregate_rollover: true,
    });
 });
@@ -162,7 +176,7 @@ d3.json('{% url 'gender_reply' oh_id=oh_id %}', function(data) {
      target: ".gender_replies",
      x_accessor: "date",
      y_accessor: ["male",'female'],
-     legend: ["male",'female'],
+     legend: ["men",'women'],
      aggregate_rollover: true,
    });
 });
