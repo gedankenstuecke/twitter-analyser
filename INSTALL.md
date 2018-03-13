@@ -1,6 +1,7 @@
 # Install
 [TwArχiv](http://twarxiv.org) is a Django application that interfaces with [Open Humans](https://openhumans.org)
 for the file storage and user management and that is designed to be deployed to *Heroku*. As such there are some dependencies and intricacies that need to be taken into account.
+NOTE: We recommend installation on python3.
 
 ## Dependencies
 
