@@ -87,7 +87,7 @@ def import_data(oh_user_id):
         write_graph(top_replies, oh_user, 'top_replies',
                     'top users you replied to over time')
     except:
-        logger.error('tweet types crashed')
+        logger.error('top replies crashed')
     try:
         heatmap = create_heatmap(dataframe)
         write_graph(heatmap, oh_user, 'heatmap',

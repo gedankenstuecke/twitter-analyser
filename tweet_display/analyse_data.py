@@ -83,6 +83,7 @@ def create_tweet_types(dataframe):
     dataframe_mean_week['date'] = dataframe_mean_week['index'].astype(str)
     dataframe_mean_week = dataframe_mean_week.drop(['reply_user_name',
                                                     'retweet_user_name',
+                                                    'twitter_user_name',
                                                     'latitude',
                                                     'longitude',
                                                     'local_time',
@@ -99,6 +100,8 @@ def create_tweet_types(dataframe):
 
 
 def create_top_replies(dataframe):
+    exclude_name_list = [dataframe.iloc[0]['twitter_user_name']]
+    dataframe = dataframe[~dataframe['reply_user_name'].isin(exclude_name_list)]
     top_replies = dataframe[dataframe['reply_user_name'].isin(list(dataframe['reply_user_name'].value_counts()[:5].reset_index()['index']))]
     top_replies = top_replies.reset_index()[['reply_user_name','utc_time']]
     top_replies['utc_time'] = top_replies['utc_time'].dt.date
