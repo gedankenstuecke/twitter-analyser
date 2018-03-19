@@ -101,6 +101,7 @@ def create_dataframe(tweets):
     hashtag = []
     media = []
     url = []
+    twitter_user_name = []
     retweet_user_name = []
     retweet_name = []
     reply_user_name = []
@@ -119,6 +120,7 @@ def create_dataframe(tweets):
         hashtag.append(check_hashtag(single_tweet))
         media.append(check_media(single_tweet))
         url.append(check_url(single_tweet))
+        twitter_user_name.append(single_tweet['user']['screen_name'])
         retweet = check_retweet(single_tweet)
         retweet_user_name.append(retweet[0])
         retweet_name.append(retweet[1])
@@ -139,7 +141,8 @@ def create_dataframe(tweets):
                             'retweet_name': retweet_name,
                             'reply_user_name': reply_user_name,
                             'reply_name': reply_name,
-                            'text': text
+                            'text': text,
+                            'twitter_user_name': twitter_user_name
     })
     return dataframe
 
