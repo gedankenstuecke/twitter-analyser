@@ -2,6 +2,7 @@ language: python
 
 services:
   - redis-server
+  - postgresql
 
 
 python:
