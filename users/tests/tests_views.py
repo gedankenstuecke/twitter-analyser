@@ -11,6 +11,7 @@ OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
 OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
 OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
+
 class IndexTestCase(TestCase):
     """
     Test cases for the index view function.
@@ -172,6 +173,7 @@ class AccessSwitchTestCase(TestCase):
         response = c.get('/users/access_switch/')
         self.assertRedirects(response, '/users/dashboard/',
                              status_code=302, target_status_code=302)
+
 
 class UploadTestCase(TestCase):
     """
