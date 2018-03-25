@@ -23,13 +23,14 @@ OH_REDIRECT_URI = os.getenv('OH_REDIRECT_URI', '')
 OH_BASE_URL = 'https://www.openhumans.org'
 # OH_BASE_URL = 'https://staging.openhumans.org'
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
-
+HEROKUCONFIG_APP_NAME = os.getenv('HEROKUCONFIG_APP_NAME', '')
+ON_HEROKU = bool(HEROKUCONFIG_APP_NAME)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = "foobar"
 # SECRET_KEY = ')r46i@!_#_j!!+xe)2+kbj#gxmrzwj&g24^2ke&e1o1nh=9zof'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -87,8 +88,16 @@ WSGI_APPLICATION = 'twitteranalyser.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES = { 'default': db_from_env }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+if ON_HEROKU:
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES = {'default': db_from_env}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
