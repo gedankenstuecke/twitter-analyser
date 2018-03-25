@@ -1,7 +1,15 @@
 from django.test import TestCase, Client
 from django.conf import settings
 from users.models import OpenHumansMember
+import requests_mock
+from unittest.mock import mock_open, patch
+from urllib.error import HTTPError
+from users.views import upload_file_to_oh
 
+OH_BASE_URL = settings.OH_BASE_URL
+OH_API_BASE = OH_BASE_URL + '/api/direct-sharing'
+OH_DIRECT_UPLOAD = OH_API_BASE + '/project/files/upload/direct/'
+OH_DIRECT_UPLOAD_COMPLETE = OH_API_BASE + '/project/files/upload/complete/'
 
 class IndexTestCase(TestCase):
     """
@@ -164,3 +172,162 @@ class AccessSwitchTestCase(TestCase):
         response = c.get('/users/access_switch/')
         self.assertRedirects(response, '/users/dashboard/',
                              status_code=302, target_status_code=302)
+
+class UploadTestCase(TestCase):
+    """
+    Tests for upload_file_to_oh.
+    """
+
+    def setUp(self):
+        """
+        Set up the app for following tests
+        """
+        settings.DEBUG = True
+        self.oh_member = OpenHumansMember.create(oh_id='1234567890abcdef',
+                                                 access_token='foo',
+                                                 refresh_token='bar',
+                                                 expires_in=2000)
+        self.oh_member.save()
+        self.user = self.oh_member.user
+        self.user.set_password('foobar')
+        self.user.save()
+
+    def test_upload_function(self):
+        """
+        Tests upload feature
+        """
+        with requests_mock.Mocker() as m:
+            # API-upload-URL
+            upload_url = '{}?access_token={}'.format(
+                OH_DIRECT_UPLOAD, self.oh_member.access_token)
+            # mock delete-API call
+            m.register_uri('POST',
+                           OH_API_BASE + "/project/files/delete/",
+                           status_code=200)
+            # mock request 1 to initiate upload, get AWS link
+            m.register_uri('POST',
+                           upload_url,
+                           json={'url':
+                                 'http://example.com/upload',
+                                 'id': 1234},
+                           status_code=201)
+            # mock AWS link
+            m.register_uri('PUT',
+                           'http://example.com/upload',
+                           status_code=200)
+            # mock completed link
+            m.register_uri('POST',
+                           OH_DIRECT_UPLOAD_COMPLETE,
+                           status_code=200)
+            with patch('builtins.open',
+                       mock_open(read_data='foobar'),
+                       create=True):
+                fake_file = open('foo')
+                upload_file_to_oh(self.oh_member,
+                                  fake_file,
+                                  {'tags': '["foo"]'})
+
+    def test_upload_function_first_fail(self):
+        """
+        Tests upload feature.
+        """
+        with requests_mock.Mocker() as m:
+            # API-upload-URL
+            upload_url = '{}?access_token={}'.format(
+                OH_DIRECT_UPLOAD, self.oh_member.access_token)
+            # mock delete-API call
+            m.register_uri('POST',
+                           OH_API_BASE + "/project/files/delete/",
+                           status_code=200)
+            # mock request 1 to initiate upload, get AWS link
+            m.register_uri('POST',
+                           upload_url,
+                           json={'url':
+                                 'http://example.com/upload',
+                                 'id': 1234},
+                           status_code=404)
+            # mock AWS link
+            m.register_uri('PUT',
+                           'http://example.com/upload',
+                           status_code=200)
+            # mock completed link
+            m.register_uri('POST',
+                           OH_DIRECT_UPLOAD_COMPLETE,
+                           status_code=200)
+            with patch('builtins.open',
+                       mock_open(read_data='foobar'),
+                       create=True):
+                fake_file = open('foo')
+                self.assertRaises(HTTPError, upload_file_to_oh,
+                                  self.oh_member, fake_file,
+                                  {'tags': '["foo"]'})
+
+    def test_upload_function_second_fail(self):
+        """
+        Tests upload feature
+        """
+        with requests_mock.Mocker() as m:
+            # API-upload-URL
+            upload_url = '{}?access_token={}'.format(
+                OH_DIRECT_UPLOAD, self.oh_member.access_token)
+            # mock delete-API call
+            m.register_uri('POST',
+                           OH_API_BASE + "/project/files/delete/",
+                           status_code=200)
+            # mock request 1 to initiate upload, get AWS link
+            m.register_uri('POST',
+                           upload_url,
+                           json={'url':
+                                 'http://example.com/upload',
+                                 'id': 1234},
+                           status_code=201)
+            # mock AWS link
+            m.register_uri('PUT',
+                           'http://example.com/upload',
+                           status_code=404)
+            # mock completed link
+            m.register_uri('POST',
+                           OH_DIRECT_UPLOAD_COMPLETE,
+                           status_code=200)
+            with patch('builtins.open',
+                       mock_open(read_data='foobar'),
+                       create=True):
+                fake_file = open('foo')
+                self.assertRaises(HTTPError, upload_file_to_oh,
+                                  self.oh_member, fake_file,
+                                  {'tags': '["foo"]'})
+
+    def test_upload_function_third_fail(self):
+        """
+        Tests upload feature
+        """
+        with requests_mock.Mocker() as m:
+            # API-upload-URL
+            upload_url = '{}?access_token={}'.format(
+                OH_DIRECT_UPLOAD, self.oh_member.access_token)
+            # mock delete-API call
+            m.register_uri('POST',
+                           OH_API_BASE + "/project/files/delete/",
+                           status_code=200)
+            # mock request 1 to initiate upload, get AWS link
+            m.register_uri('POST',
+                           upload_url,
+                           json={'url':
+                                 'http://example.com/upload',
+                                 'id': 1234},
+                           status_code=201)
+            # mock AWS link
+            m.register_uri('PUT',
+                           'http://example.com/upload',
+                           status_code=200)
+            # mock completed link
+            m.register_uri('POST',
+                           OH_DIRECT_UPLOAD_COMPLETE,
+                           status_code=404)
+            with patch('builtins.open',
+                       mock_open(read_data='foobar'),
+                       create=True):
+                fake_file = open('foo')
+                self.assertRaises(HTTPError, upload_file_to_oh,
+                                  self.oh_member, fake_file,
+                                  {'tags': '["foo"]'})
