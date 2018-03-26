@@ -134,7 +134,6 @@ class DashboardTestCase(TestCase):
         Tests the dashboard view function when authenticated
         """
         c = Client()
-        response = c.get('/users/dashboard/')
         c.login(username=self.user.username, password='foobar')
         response = c.get('/users/dashboard/')
         self.assertTemplateUsed(response, 'users/dashboard.html')
@@ -165,19 +164,34 @@ class AccessSwitchTestCase(TestCase):
         self.user.set_password('foobar')
         self.user.save()
 
-    def test_access_switch(self):
+    def test_access_switch_unauthenticated(self):
         """
-        Tests the delete_account view function.
+        Tests the access_switch view function
+        when unauthenticated.
         """
         c = Client()
         response = c.get('/users/access_switch/')
         self.assertRedirects(response, '/users/dashboard/',
                              status_code=302, target_status_code=302)
 
+    def test_access_switch(self):
+        """
+        Tests the access_switch view function.
+        """
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        retrieved = OpenHumansMember.objects.get(
+            oh_id=self.user.openhumansmember.oh_id)
+        self.assertEqual(retrieved.public, False)
+        c.get('/users/access_switch/')
+        retrieved = OpenHumansMember.objects.get(
+            oh_id=self.user.openhumansmember.oh_id)
+        self.assertEqual(retrieved.public, True)
+
 
 class UploadTestCase(TestCase):
     """
-    Tests for upload_file_to_oh.
+    Tests for upload_file_to_oh and upload_old.
     """
 
     def setUp(self):
@@ -193,6 +207,24 @@ class UploadTestCase(TestCase):
         self.user = self.oh_member.user
         self.user.set_password('foobar')
         self.user.save()
+
+    def test_upload_old(self):
+        """
+        Tests the upload_old function.
+        """
+        c = Client()
+        response = c.get('/users/upload_simple/')
+        self.assertRedirects(response, '/users/dashboard/',
+                             status_code=302, target_status_code=302)
+
+    def test_upload_old_authenticated(self):
+        """
+        Tests the upload_old function when authenticated.
+        """
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        response = c.get('/users/upload_simple/')
+        self.assertTemplateUsed(response, 'users/upload_old.html')
 
     def test_upload_function(self):
         """
@@ -345,6 +377,14 @@ class CompleteTestCase(TestCase):
         Set up the app for following tests
         """
         settings.DEBUG = True
+        self.oh_member = OpenHumansMember.create(oh_id='1234567890abcdef',
+                                                 access_token='foo',
+                                                 refresh_token='bar',
+                                                 expires_in=2000)
+        self.oh_member.save()
+        self.user = self.oh_member.user
+        self.user.set_password('foobar')
+        self.user.save()
 
     def test_complete_unauthenticated(self):
         """
@@ -360,3 +400,44 @@ class CompleteTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/',
                              status_code=302, target_status_code=302)
+
+
+class RegenerategraphsTestCase(TestCase):
+    """
+    Tests regenerate_graphs.
+    """
+
+    def setUp(self):
+        """
+        Set up the app for following tests
+        """
+        settings.DEBUG = True
+        self.oh_member = OpenHumansMember.create(oh_id='1234567890abcdef',
+                                                 access_token='foo',
+                                                 refresh_token='bar',
+                                                 expires_in=2000)
+        self.oh_member.save()
+        self.user = self.oh_member.user
+        self.user.set_password('foobar')
+        self.user.save()
+
+    def test_regenerate_graphs_get_unauthenticated(self):
+        """
+        Test making a get request to regenerate_graphs
+        when not authenticated.
+        """
+        c = Client()
+        response = c.get('/users/regenerate/')
+        self.assertRedirects(response, '/users/dashboard/',
+                             status_code=302, target_status_code=302)
+
+    def test_regenerate_graphs_get_authenticated(self):
+        """
+        Test making a get request to regenerate_graphs
+        when authenticated.
+        """
+        c = Client()
+        c.login(username=self.user.username, password='foobar')
+        response = c.get('/users/regenerate/')
+        self.assertRedirects(response, '/users/dashboard/',
+                             status_code=302, target_status_code=200)

@@ -30,7 +30,7 @@ ON_HEROKU = bool(HEROKUCONFIG_APP_NAME)
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "foobar"
+SECRET_KEY = os.getenv('SECRET_KEY', 'foo')
 # SECRET_KEY = ')r46i@!_#_j!!+xe)2+kbj#gxmrzwj&g24^2ke&e1o1nh=9zof'
 
 # SECURITY WARNING: don't run with debug turned on in production!
