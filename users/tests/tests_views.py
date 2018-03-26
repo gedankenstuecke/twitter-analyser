@@ -333,3 +333,30 @@ class UploadTestCase(TestCase):
                 self.assertRaises(HTTPError, upload_file_to_oh,
                                   self.oh_member, fake_file,
                                   {'tags': '["foo"]'})
+
+
+class CompleteTestCase(TestCase):
+    """
+    Tests for complete function.
+    """
+
+    def setUp(self):
+        """
+        Set up the app for following tests
+        """
+        settings.DEBUG = True
+
+    def test_complete_unauthenticated(self):
+        """
+        Tests making a get request to complete
+        when not authenticated.
+        """
+        with self.assertLogs(logger='users.views', level='DEBUG') as log:
+            c = Client()
+            response = c.get("/users/complete/", {'code': 'mytestcode'})
+        self.assertIn(
+                    "Invalid code exchange. User returned to start page.",
+                    log.output[len(log.output)-1])
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/',
+                             status_code=302, target_status_code=302)
