@@ -23,8 +23,7 @@ OH_REDIRECT_URI = os.getenv('OH_REDIRECT_URI', '')
 OH_BASE_URL = 'https://www.openhumans.org'
 # OH_BASE_URL = 'https://staging.openhumans.org'
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
-HEROKUCONFIG_APP_NAME = os.getenv('HEROKUCONFIG_APP_NAME', '')
-ON_HEROKU = bool(HEROKUCONFIG_APP_NAME)
+ON_HEROKU = os.getenv('ON_HEROKU', False)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
