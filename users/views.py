@@ -126,14 +126,14 @@ def upload_file_to_oh(oh_member, filehandle, metadata):
               'filename': filehandle.name,
               'metadata': json.dumps(metadata)})
     if req1.status_code != 201:
-        raise HTTPError(upload_url, req1.status_code,
-                        'Bad response when starting file upload.')
+        raise raise_http_error(upload_url, req1,
+                               'Bad response when starting file upload.')
 
     # Upload to S3 target.
     req2 = requests.put(url=req1.json()['url'], data=filehandle)
     if req2.status_code != 200:
-        raise HTTPError(req1.json()['url'], req2.status_code,
-                        'Bad response when uploading to target.')
+        raise raise_http_error(req1.json()['url'], req2,
+                               'Bad response when uploading to target.')
 
     # Report completed upload to Open Humans.
     complete_url = ('{}?access_token={}'.format(
@@ -143,11 +143,15 @@ def upload_file_to_oh(oh_member, filehandle, metadata):
         data={'project_member_id': oh_member.oh_id,
               'file_id': req1.json()['id']})
     if req3.status_code != 200:
-        raise HTTPError(complete_url, req2.status_code,
-                        'Bad response when completing upload.')
+        raise raise_http_error(complete_url, req2,
+                               'Bad response when completing upload.')
 
     # print('Upload done: "{}" for member {}.'.format(
     #    os.path.basename(filehandle.name), oh_member.oh_id))
+
+
+def raise_http_error(url, response, message):
+    raise HTTPError(url, response.status_code, message, hdrs=None, fp=None)
 
 
 def index(request):

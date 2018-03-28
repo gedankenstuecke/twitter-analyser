@@ -62,7 +62,7 @@ I recommend using the `heroku-cli` interface to boot up both the `celery`-worker
 REDIS_URL=redis:// # where is your redis server located? most likely at this url if in dev
 DATABASE_URL=postgres:///username # where does your postgres DB live?
 SECRET_KEY=foobar # the Django Secret Key
-
+ON_HEROKU=False # is our app deployed on heroku?
 OH_CLIENT_ID=NOT_A_KEY_EITHER # the client ID for your Open Humans project
 OH_CLIENT_SECRET=NOTAREALKEY # the secret key you get from Open Humans when creating a project.
 OH_ACTIVITY_PAGE=https://www.openhumans.org/activity/your-activity-name/ # What is your Project on Open Humans?
