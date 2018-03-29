@@ -114,9 +114,10 @@ def create_dataframe(tweets):
         coordinates = check_coordinates(single_tweet)
         latitude.append(coordinates[0])
         longitude.append(coordinates[1])
-        local_time.append(convert_time(coordinates,
-                                       datetime.datetime.strptime(single_tweet['created_at'],
-                                                                  '%Y-%m-%d %H:%M:%S %z')))
+        creation_time = datetime.datetime.strptime(single_tweet['created_at'],
+                                                   '%Y-%m-%d %H:%M:%S %z')
+        converted_time = convert_time(coordinates, creation_time)
+        local_time.append(converted_time)
         hashtag.append(check_hashtag(single_tweet))
         media.append(check_media(single_tweet))
         url.append(check_url(single_tweet))
