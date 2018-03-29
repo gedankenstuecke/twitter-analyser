@@ -257,7 +257,7 @@ def __main__():
     retweet_gender = predict_gender(dataframe,'retweet_name','180d')
     write_json_for_graph(retweet_gender,'gender_rt.json')
     reply_gender = predict_gender(dataframe,'reply_name','180d')
-    write_json_for_graph(retweet_gender,'gender_reply.json')
+    write_json_for_graph(reply_gender, 'gender_reply.json')
 
 if __name__ == "__main__":
     main()
