@@ -9,8 +9,8 @@ def grant_access(request, oh_id):
             return request.user.openhumansmember.oh_id
     else:
         if (OpenHumansMember.objects.get(oh_id=oh_id).public or
-           (request.user.is_authenticated and
-           request.user.openhumansmember.oh_id == oh_id)):
+            (request.user.is_authenticated and
+             request.user.openhumansmember.oh_id == oh_id)):
             return oh_id
     return False
 
@@ -51,6 +51,8 @@ def message_success(oh_user):
 archive are now ready for you.\nGo over to \
 https://twtr-analyser.herokuapp.com/tweet_display/index/{} to \
 view them'.format(oh_user.oh_id)
-    message_url = 'https://www.openhumans.org/api/direct-sharing/project/message/?access_token={}'.format(oh_user.access_token)
+    message_url = 'https://www.openhumans.org/api/'
+    'direct-sharing/project/message/?access_token={}'.format(
+        oh_user.access_token)
     requests.post(message_url, data={'subject': subject,
                                      'message': message})

@@ -7,19 +7,23 @@ from tzwhere import tzwhere
 gender_guesser = gender.Detector(case_sensitive=False)
 tzwhere_ = tzwhere.tzwhere()
 
-### READ JSON FILES FROM TWITTER ARCHIVE!
+# READ JSON FILES FROM TWITTER ARCHIVE!
+
 
 def check_hashtag(single_tweet):
     '''check whether tweet has any hashtags'''
     return len(single_tweet['entities']['hashtags']) > 0
 
+
 def check_media(single_tweet):
     '''check whether tweet has any media attached'''
-    return len(single_tweet['entities']['media' ]) > 0
+    return len(single_tweet['entities']['media']) > 0
+
 
 def check_url(single_tweet):
     '''check whether tweet has any urls attached'''
     return len(single_tweet['entities']['urls']) > 0
+
 
 def check_retweet(single_tweet):
     '''
@@ -31,7 +35,8 @@ def check_retweet(single_tweet):
         return (single_tweet['retweeted_status']['user']['screen_name'],
                 single_tweet['retweeted_status']['user']['name'])
     else:
-        return (None,None)
+        return (None, None)
+
 
 def check_coordinates(single_tweet):
     '''
@@ -43,7 +48,8 @@ def check_coordinates(single_tweet):
         return (single_tweet['geo']['coordinates'][0],
                 single_tweet['geo']['coordinates'][1])
     else:
-        return (None,None)
+        return (None, None)
+
 
 def check_reply_to(single_tweet):
     '''
@@ -57,22 +63,24 @@ def check_reply_to(single_tweet):
             if user['screen_name'] == single_tweet['in_reply_to_screen_name']:
                 name = user['name']
                 break
-        return (single_tweet['in_reply_to_screen_name'],name)
+        return (single_tweet['in_reply_to_screen_name'], name)
     else:
-        return (None,None)
+        return (None, None)
 
-def convert_time(coordinates,time_utc):
+
+def convert_time(coordinates, time_utc):
     '''
     Does this tweet have a geo location? if yes
     we can easily convert the UTC timestamp to true local time!
     otherwise return nones
     '''
     if coordinates[0] and coordinates[1]:
-        timezone_str = tzwhere_.tzNameAt(coordinates[0],coordinates[1])
+        timezone_str = tzwhere_.tzNameAt(coordinates[0], coordinates[1])
         if timezone_str:
             timezone = pytz.timezone(timezone_str)
-            time_obj_local = datetime.datetime.astimezone(time_utc,timezone)
+            time_obj_local = datetime.datetime.astimezone(time_utc, timezone)
             return time_obj_local
+
 
 def create_dataframe(tweets):
     '''
@@ -94,11 +102,13 @@ def create_dataframe(tweets):
     text = []
     # iterate over all tweets and extract data
     for single_tweet in tweets:
-        utc_time.append(datetime.datetime.strptime(single_tweet['created_at'],'%Y-%m-%d %H:%M:%S %z'))
+        utc_time.append(datetime.datetime.strptime(
+            single_tweet['created_at'], '%Y-%m-%d %H:%M:%S %z'))
         coordinates = check_coordinates(single_tweet)
         latitude.append(coordinates[0])
         longitude.append(coordinates[1])
-        local_time.append(convert_time(coordinates,datetime.datetime.strptime(single_tweet['created_at'],'%Y-%m-%d %H:%M:%S %z')))
+        local_time.append(convert_time(coordinates, datetime.datetime.strptime(
+            single_tweet['created_at'], '%Y-%m-%d %H:%M:%S %z')))
         hashtag.append(check_hashtag(single_tweet))
         media.append(check_media(single_tweet))
         url.append(check_url(single_tweet))
@@ -110,21 +120,22 @@ def create_dataframe(tweets):
         reply_name.append(reply[1])
         text.append(single_tweet['text'])
     # convert the whole shebang into a pandas dataframe
-    dataframe = pd.DataFrame(data= {
-                    'utc_time' : utc_time,
-                    'local_time' : local_time,
-                    'latitude' : latitude,
-                    'longitude' : longitude,
-                    'hashtag' : hashtag,
-                    'media' : media,
-                    'url' : url,
-                    'retweet_user_name' : retweet_user_name,
-                    'retweet_name' : retweet_name,
-                    'reply_user_name' : reply_user_name,
-                    'reply_name' : reply_name,
-                    'text' : text
+    dataframe = pd.DataFrame(data={
+                    'utc_time': utc_time,
+                    'local_time': local_time,
+                    'latitude': latitude,
+                    'longitude': longitude,
+                    'hashtag': hashtag,
+                    'media': media,
+                    'url': url,
+                    'retweet_user_name': retweet_user_name,
+                    'retweet_name': retweet_name,
+                    'reply_user_name': reply_user_name,
+                    'reply_name': reply_name,
+                    'text': text
     })
     return dataframe
+
 
 def read_file_index(index_file):
     '''
@@ -138,6 +149,7 @@ def read_file_index(index_file):
         files = json.loads(d)
     return files
 
+
 def read_single_file(fpath):
     '''
     read in the json of a single tweet.json
@@ -148,7 +160,8 @@ def read_single_file(fpath):
         tweets = json.loads(d)
     return tweets
 
-def read_files(file_list,base_path):
+
+def read_files(file_list, base_path):
     '''
     use the file list as generated by
     read_file_index() to read in the json
@@ -163,12 +176,13 @@ def read_files(file_list,base_path):
         data_frames.append(df_tweets)
     return data_frames
 
+
 def create_main_dataframe(tweet_index='twitter_archive/data/js/tweet_index.js',
                           base_directory='twitter_archive'):
     file_index = read_file_index(tweet_index)
-    dataframes = read_files(file_index,base_directory)
+    dataframes = read_files(file_index, base_directory)
     dataframe = pd.concat(dataframes)
-    dataframe = dataframe.sort_values('utc_time',ascending=False)
+    dataframe = dataframe.sort_values('utc_time', ascending=False)
     dataframe = dataframe.set_index('utc_time')
     dataframe = dataframe.replace(to_replace={
                                     'url': {False: None},
@@ -177,16 +191,19 @@ def create_main_dataframe(tweet_index='twitter_archive/data/js/tweet_index.js',
                                     })
     return dataframe
 
-### GENERATE JSON FOR GRAPHING ON THE WEB
+# GENERATE JSON FOR GRAPHING ON THE WEB
 
-def create_all_tweets(dataframe,rolling_frame='180d'):
+
+def create_all_tweets(dataframe, rolling_frame='180d'):
     dataframe_grouped = dataframe.groupby(dataframe.index.date).count()
     dataframe_grouped.index = pd.to_datetime(dataframe_grouped.index)
     dataframe_mean_week = dataframe_grouped.rolling(rolling_frame).mean()
 
+
 def create_hourly_stats(dataframe):
-    get_hour = lambda x: x.hour
-    get_weekday = lambda x: x.weekday()
+    def get_hour(x): return x.hour
+
+    def get_weekday(x): return x.weekday()
 
     local_times = dataframe.copy()
     local_times = local_times.loc[dataframe['local_time'].notnull()]
@@ -194,62 +211,67 @@ def create_hourly_stats(dataframe):
     local_times['weekday'] = local_times['local_time'].apply(get_weekday)
     local_times['hour'] = local_times['local_time'].apply(get_hour)
 
-
     local_times = local_times.replace(to_replace={'weekday':
-                                                    {0:'Weekday',
-                                                     1:'Weekday',
-                                                     2:'Weekday',
-                                                     3:'Weekday',
-                                                     4:'Weekday',
-                                                     5:'Weekend',
-                                                     6:'Weekend',
-                                                    }
-                                       })
+                                                  {0: 'Weekday',
+                                                   1: 'Weekday',
+                                                   2: 'Weekday',
+                                                   3: 'Weekday',
+                                                   4: 'Weekday',
+                                                   5: 'Weekend',
+                                                   6: 'Weekend',
+                                                   }
+                                                  })
 
-    local_times = local_times.groupby([local_times['hour'],local_times['weekday']]).size().reset_index()
+    local_times = local_times.groupby(
+        [local_times['hour'], local_times['weekday']]).size().reset_index()
     local_times['values'] = local_times[0]
     local_times = local_times.set_index(local_times['hour'])
 
     return local_times.pivot(columns='weekday', values='values').reset_index()
 
-def predict_gender(dataframe,column_name,rolling_frame='180d'):
+
+def predict_gender(dataframe, column_name, rolling_frame='180d'):
     '''
     take full dataframe w/ tweets and extract
     gender for a name-column where applicable
     returns two-column df w/ timestamp & gender
     '''
-    splitter = lambda x: x.split()[0]
-    gender_column = dataframe.loc[dataframe[column_name].notnull()][column_name].apply(
+    def splitter(x): return x.split()[0]
+    temp = dataframe[column_name].notnull()
+    gender_column = dataframe.loc[temp][column_name].apply(
         splitter).apply(
         gender_guesser.get_gender)
 
-    gender_dataframe = pd.DataFrame(data = {
-                    'time' : list(gender_column.index),
-                    'gender' : list(gender_column)
+    gender_dataframe = pd.DataFrame(data={
+                    'time': list(gender_column.index),
+                    'gender': list(gender_column)
                     })
 
     gender_dataframe = gender_dataframe.set_index('time')
-    gender_dataframe_tab = gender_dataframe.groupby([gender_dataframe.index.date,gender_dataframe['gender']]).size().reset_index()
+    group = [gender_dataframe.index.date, gender_dataframe['gender']]
+    gender_dataframe_tab = gender_dataframe.groupby(group).size().reset_index()
     gender_dataframe_tab['date'] = gender_dataframe_tab['level_0']
     gender_dataframe_tab['count'] = gender_dataframe_tab[0]
-    gender_dataframe_tab = gender_dataframe_tab.drop([0,'level_0'],axis=1)
+    gender_dataframe_tab = gender_dataframe_tab.drop([0, 'level_0'], axis=1)
     gender_dataframe_tab = gender_dataframe_tab.set_index('date')
     gender_dataframe_tab.index = pd.to_datetime(gender_dataframe_tab.index)
     gdf_pivot = gender_dataframe_tab.pivot(columns='gender', values='count')
     gdf_pivot = gdf_pivot.rolling(rolling_frame).mean()
     gdf_pivot = gdf_pivot.reset_index()
     gdf_pivot['date'] = gdf_pivot['date'].astype(str)
-    gdf_pivot = gdf_pivot.drop(['mostly_male','mostly_female','andy','unknown'],axis=1)
+    gdf_pivot = gdf_pivot.drop(
+        ['mostly_male', 'mostly_female', 'andy', 'unknown'], axis=1)
     return gdf_pivot
 
-### DUMP JSON FOR GRAPHING
+# DUMP JSON FOR GRAPHING
+
+
 def write_json_for_graph(dataframe,
                          outfile='graph.json',
                          format='records'):
     json_object = dataframe.to_json(orient=format)
-    with open(outfile,'w') as f:
+    with open(outfile, 'w') as f:
         f.write(json_object)
-
 
 
 def __main__():

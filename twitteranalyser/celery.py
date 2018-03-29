@@ -1,7 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
-from django.conf import settings
 
 
 # set the default Django settings module for the 'celery' program.
@@ -19,7 +18,8 @@ app.conf.update(CELERY_BROKER_URL=os.environ['REDIS_URL'],
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
-#app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+# app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
 
 @app.task(bind=True)
 def debug_task(self):
