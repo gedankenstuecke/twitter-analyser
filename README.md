@@ -1,5 +1,9 @@
 <h1>Welcome to the <font color="#1DA1F2">Tw</font>Arχiv.</h1>
 
+[![Build Status](https://travis-ci.org/gedankenstuecke/twitter-analyser.svg?branch=master)](https://travis-ci.org/gedankenstuecke/twitter-analyser)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8bb9400f864188116a91/maintainability)](https://codeclimate.com/github/gedankenstuecke/twitter-analyser/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8bb9400f864188116a91/test_coverage)](https://codeclimate.com/github/gedankenstuecke/twitter-analyser/test_coverage)
+
 [![](docs/tweet_class.png)](http://twarxiv.org)
 [![](docs/gender_reply.png)](http://twarxiv.org)
 
