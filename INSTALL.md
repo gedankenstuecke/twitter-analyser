@@ -9,14 +9,14 @@ NOTE: We recommend installation on python3.
 TwArχiv uses two kinds of databases for short- and long-term storage. The short term storage (for managing tasks that are not run on the webserver) is done with `redis` while the long-term storage is done with `postgresql`. If you are deploying to the heroku production environment you just have to click the appropriate add-ons.
 
 For your development environment you have to install both `redis` and `postgresql` on your local machine.
-If you are running MacOS and using `brew` (or are a user of `linuxbrew`) you can easily install both with the following commands:
+If you are running macOS and using `brew` (or are a user of `linuxbrew`) you can install both with the following commands:
 
 ```
 brew install redis
 brew install postgresql
 ```
 
-You can then easily run `redis-server` from your command line to start an instance of `redis`.
+You can then run `redis-server` from your command line to start an instance of `redis`.
 The configuration of `postgres` can be a bit more involved. [Check out this blogpost for some tips](https://www.codementor.io/devops/tutorial/getting-started-postgresql-server-mac-osx).
 
 ### Python modules
@@ -44,7 +44,7 @@ If you are using `heroku` in your development environment it should take care of
 
 ## Create a Project on Open Humans
 We want to interface with Open Humans for our project. For this reason we need to create a research project on openhumans.org. After creating an account go to https://www.openhumans.org/direct-sharing/projects/manage/
-and generate a new _OAuth_ project. The most important parts to get right are the `enrollment URL` and the `redirect URL`. For your development environment this should be the right URLs:
+and generate a new _OAuth_ project. The most important parts to get right are the `enrollment URL` and the `redirect URL`. For your development environment these should be the right URLs:
 
 ```
 enrollment: http://127.0.0.1:5000/users/
