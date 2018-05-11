@@ -10,7 +10,7 @@ Right now we don't have a detailed plan of what we want to work on next. But her
 2. Have a look at the open issues to see what could be improved.
 
 ### Missing things
-1. We don't have any tests so far. If you feel that is something you enjoy: Please go ahead! 😎
+1. We don't have any tests so far. If you feel that that is something you enjoy: Please go ahead! 😎
 2. More data analysis!
 
 

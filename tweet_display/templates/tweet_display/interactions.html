@@ -23,7 +23,7 @@
       </div>
       <div class="panel-body">
         <p>
-          Replying to someones tweets is the main way of interacting on Twitter.
+          Replying to someone's tweets is the main way of interacting on Twitter.
           The people we interact with can stay the same over large spans of time,
           or they can change - reflecting different social networks and circles of
           friends we move in.
@@ -36,7 +36,7 @@
         </p>
         <p>
           The <code>x-axis</code> thus lists individual
-          quarters since the sign-up to Twitter. They <code>y-axis</code> gives the
+          quarters since the sign-up to Twitter. The <code>y-axis</code> gives the
           sum of replies for the individual users per quarter. The <i>Top Five</i>
           people you replied to are color-coded and are also listed on the graph
           when hovering over a given data point.
@@ -189,7 +189,7 @@ d3.json('{% url 'top_replies' oh_id=oh_id %}', function(data) {
    });
    MG.data_graphic({
      title: "top replies",
-     description: "Whom did you reply to most? And did this behavior change over time?",
+     description: "To whom did you reply the most? And did this behavior change over time?",
      data: data,
      width: 1200,
      height: 450,
