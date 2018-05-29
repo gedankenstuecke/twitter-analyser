@@ -18,7 +18,9 @@ class DataTestCase(TestCase):
     """
 
     def setUp(self):
-        test_file = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'test_archive_2016_2017_2_months.zip')
+        file_name = 'test_archive_2016_2017_2_months.zip'
+        current_dir = os.path.dirname(os.path.realpath('__file__'))
+        test_file = os.path.join(current_dir, file_name)
         self.df = create_main_dataframe(test_file)
 
     def test_create_hourly_stats(self):
