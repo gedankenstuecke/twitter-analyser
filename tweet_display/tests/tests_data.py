@@ -13,28 +13,29 @@ from ..analyse_data import create_heatmap, \
 
 class DataTestCase(TestCase):
     """
-    Test cases for data loading and analysis.
+    Test cases for data loading and analysis. Uses only two months,
+    December 2016 and January 2017, from test_archive.zip.
     """
 
     def setUp(self):
-        test_file = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'minimized_test_archive.zip')
+        test_file = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'test_archive_2016_2017_2_months.zip')
         self.df = create_main_dataframe(test_file)
 
     def test_create_hourly_stats(self):
-        with self.assertRaises(KeyError):  # KeyError: 'Weekday'
-            create_hourly_stats(self.df)
+        stats = create_hourly_stats(self.df)
+        self.assertEquals(stats.shape, (20, 4))
 
     def test_create_heatmap(self):
         heatmap = create_heatmap(self.df)
-        self.assertEquals(heatmap.shape, (0, 2))
+        self.assertEquals(heatmap.shape, (469, 2))
 
     def test_create_overall(self):
         overall = create_overall(self.df)
         self.assertEquals(overall.shape, (62, 2))
 
     def test_create_timeline(self):
-        with self.assertRaises(NotImplementedError):
-            create_timeline(self.df)  # NotImplementedError: Not supported for type RangeIndex
+        timeline = create_timeline(self.df)
+        self.assertEquals(len(timeline), 78186)
 
     def test_top_replies(self):
         replies = create_top_replies(self.df)
