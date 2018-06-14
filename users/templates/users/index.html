@@ -37,10 +37,19 @@
               Open Humans</a>.
             </li>
           </ol>
+          {%if inactive_project%}
+          <div class="alert alert-danger" role="alert">
+                        <b>This project is currently awaiting new approval from Open Humans
+                        before it can accept data again.</b> Head to the Open Humans website
+                        if you want to deauthorize this project and delete its files.<br/>
+                        If you also want to delete your graphs on this page please email bgreshake@googlemail.com with your <code>project_member_id</code> (you can find this on Open Humans too).
+                      </div>
+          {%else%}
           <a class="btn btn-primary btn-lg"
             href="https://www.openhumans.org/direct-sharing/projects/oauth2/authorize/?client_id={{ client_id }}&response_type=code{% if redirect_uri %}&redirect_uri={{redirect_uri}}{% endif %}">
               Get started / Login
           </a>
+          {%endif%}
         </div>
         <div class="col-md-6">
           <h2>FAQ</h2>

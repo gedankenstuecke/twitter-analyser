@@ -160,6 +160,7 @@ def index(request):
     """
     context = {'client_id': settings.OH_CLIENT_ID,
                'oh_proj_page': settings.OH_ACTIVITY_PAGE,
+               'inactive_project': settings.INACTIVE_PROJECT,
                'redirect_uri': settings.OH_REDIRECT_URI}
     if request.user.is_authenticated:
         return redirect('dashboard')

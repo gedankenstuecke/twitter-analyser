@@ -24,6 +24,8 @@ OH_BASE_URL = 'https://www.openhumans.org'
 # OH_BASE_URL = 'https://staging.openhumans.org'
 APP_BASE_URL = os.getenv('APP_BASE_URL', 'http://127.0.0.1:5000/users')
 ON_HEROKU = os.getenv('ON_HEROKU', False)
+INACTIVE_PROJECT = True if os.getenv('INACTIVE_PROJECT', "True").lower() == 'true' else False
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
