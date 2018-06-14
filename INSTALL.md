@@ -81,4 +81,6 @@ heroku config:set SECRET_KEY=foobar
 heroku config:set APP_BASE_URL=http://www.example.com
 ```
 
+**Important:** Don't forget to set `ON_HEROKU=True`. Otherwise the automatic setup of your database environment will not work and you will wonder why the database migrations & queries won't work. 
+
 **You don't have to set the `REDIS_URL` and `DATABASE_URL` in production. This will be done by heroku!**

@@ -5,6 +5,7 @@ import json
 import datetime
 import pytz
 
+import os
 import io
 import pandas as pd
 import requests
@@ -148,12 +149,15 @@ def create_dataframe(tweets):
     return dataframe
 
 
-def read_files(zip_url):
+def fetch_zip_file(zip_url):
     tf = tempfile.NamedTemporaryFile()
     print('downloading files')
     tf.write(requests.get(zip_url).content)
     tf.flush()
-    zf = zipfile.ZipFile(tf.name)
+    return zipfile.ZipFile(tf.name)
+
+
+def read_files(zf):
     print('reading index')
     with zf.open('data/js/tweet_index.js', 'r') as f:
         f = io.TextIOWrapper(f)
@@ -175,8 +179,16 @@ def read_files(zip_url):
 
 
 def create_main_dataframe(zip_url='http://ruleofthirds.de/test_archive.zip'):
-    print('reading files')
-    dataframes = read_files(zip_url)
+    if zip_url.startswith('http'):
+        print('reading zip file from web')
+        zip_file = fetch_zip_file(zip_url)
+    elif os.path.isfile(zip_url):
+        print('reading zip file from disk')
+        zip_file = zipfile.ZipFile(zip_url)
+    else:
+        raise ValueError('zip_url is not an URL nor a file in disk')
+
+    dataframes = read_files(zip_file)
     print('concatenating...')
     dataframe = pd.concat(dataframes)
     dataframe = dataframe.sort_values('utc_time', ascending=False)
