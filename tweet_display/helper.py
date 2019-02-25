@@ -53,6 +53,6 @@ https://twtr-analyser.herokuapp.com/tweet_display/index/{} to \
 view them'.format(oh_user.oh_id)
     message_url = 'https://www.openhumans.org/api/'
     'direct-sharing/project/message/?access_token={}'.format(
-        oh_user.access_token)
+        oh_user.get_access_token())
     requests.post(message_url, data={'subject': subject,
                                      'message': message})
