@@ -46,6 +46,7 @@ def check_graphs(graph_types, oh_id):
 
 
 def message_success(oh_user):
+    print('trying to send message for {}'.format(oh_user.oh_id))
     subject = 'Your graphs are ready!'
     message = 'Dear TwArxiv user,\nthe graphs generated from your Twitter \
 archive are now ready for you.\nGo over to \
@@ -54,5 +55,7 @@ view them'.format(oh_user.oh_id)
     message_url = 'https://www.openhumans.org/api/'
     'direct-sharing/project/message/?access_token={}'.format(
         oh_user.get_access_token())
-    requests.post(message_url, data={'subject': subject,
-                                     'message': message})
+    response = requests.post(message_url, data={'subject': subject,
+                                                'message': message})
+    print(response)
+    print(response.json)
