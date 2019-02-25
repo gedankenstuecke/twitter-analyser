@@ -58,4 +58,4 @@ view them'.format(oh_user.oh_id)
     response = requests.post(message_url, data={'subject': subject,
                                                 'message': message})
     print(response)
-    print(response.json)
+    print(response.json())
