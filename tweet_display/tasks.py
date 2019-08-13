@@ -61,7 +61,6 @@ def import_data(oh_user_id):
     oh_user = OpenHumansMember.objects.get(oh_id=oh_user_id)
     delete_old_data(oh_user_id)
     dataframe = create_main_dataframe(url)
-    print(dataframe.head())
     try:
         retweet_gender = predict_gender(dataframe, 'retweet_name', '180d')
         write_graph(retweet_gender, oh_user, 'gender_rt', 'retweets by gender')
