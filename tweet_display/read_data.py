@@ -8,7 +8,7 @@ import ijson
 import io
 import pandas as pd
 import requests
-
+import os
 
 # tzwhere_ = tzwhere.tzwhere()
 tzf = TimezoneFinder()
@@ -136,8 +136,9 @@ def create_dataframe(tweets):
                     single_tweet['created_at'],
                     '%a %b %d %H:%M:%S %z %Y')
         except ValueError:
-            creation_time = datetime.datetime.strptime(single_tweet['created_at'],
-                                                       '%Y-%m-%d %H:%M:%S %z')
+            creation_time = datetime.datetime.strptime(
+                single_tweet['created_at'],
+                '%Y-%m-%d %H:%M:%S %z')
         converted_time = convert_time(coordinates, creation_time)
         local_time.append(converted_time)
         hashtag.append(check_hashtag(single_tweet))

@@ -77,18 +77,18 @@ def import_data(oh_user_id):
         write_graph(hourly_stats, oh_user, 'hourly_tweets', 'tweets per hour')
     except:
         logger.error('hourly stats crashed')
-    #try:
-    tweet_types = create_tweet_types(dataframe)
-    write_graph(tweet_types, oh_user, 'tweet_types',
-                'tweet types over time')
-    #except:
-    #    logger.error('tweet types crashed')
-    #try:
-    top_replies = create_top_replies(dataframe)
-    write_graph(top_replies, oh_user, 'top_replies',
-                'top users you replied to over time')
-    #except:
-    #    logger.error('top replies crashed')
+    try:
+        tweet_types = create_tweet_types(dataframe)
+        write_graph(tweet_types, oh_user, 'tweet_types',
+                    'tweet types over time')
+    except:
+        logger.error('tweet types crashed')
+    try:
+        top_replies = create_top_replies(dataframe)
+        write_graph(top_replies, oh_user, 'top_replies',
+                    'top users you replied to over time')
+    except:
+        logger.error('top replies crashed')
     try:
         heatmap = create_heatmap(dataframe)
         write_graph(heatmap, oh_user, 'heatmap',
