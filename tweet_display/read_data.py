@@ -4,8 +4,7 @@ import zipfile
 import json
 import datetime
 import pytz
-
-import os
+import ijson
 import io
 import pandas as pd
 import requests
@@ -154,11 +153,13 @@ def fetch_zip_file(zip_url):
     print('downloading files')
     tf.write(requests.get(zip_url).content)
     tf.flush()
-    return zipfile.ZipFile(tf.name)
+    if zipfile.is_zipfile(tf.name):
+        return (zipfile.ZipFile(tf.name), 'zipped')
+    else:
+        return (open(tf.name, 'r'), 'json')
 
 
-def read_files(zf):
-    print('reading index')
+def read_old_zip_archive(zf):
     with zf.open('data/js/tweet_index.js', 'r') as f:
         f = io.TextIOWrapper(f)
         d = f.readlines()[1:]
@@ -178,17 +179,39 @@ def read_files(zf):
     return data_frames
 
 
+def read_files(zf, filetype):
+    if filetype == 'zipped':
+        if 'data/js/tweet_index.js' in zf.namelist():
+            print('reading index')
+            data_frames = read_old_zip_archive(zf)
+            return data_frames
+        elif 'tweet.js' in zf.namelist():
+            with zf.open('tweet.js') as f:
+                f = io.TextIOWrapper(f)
+                tweet_string = f.readlines()
+                tweet_string = "".join([i.strip() for i in tweet_string])
+                tweet_string = tweet_string[25:]
+
+    elif filetype == 'json':
+        tweet_string = zf.readlines()
+        tweet_string = "".join([i.strip() for i in tweet_string])
+        tweet_string = tweet_string[25:]
+    correct_json = tempfile.NamedTemporaryFile(mode='w')
+    correct_json.write(tweet_string)
+    correct_json.flush()
+    objects = ijson.items(open(correct_json.name, 'r'), 'item')
+    for o in objects:
+        print(o)
+
+
 def create_main_dataframe(zip_url='http://ruleofthirds.de/test_archive.zip'):
     if zip_url.startswith('http'):
         print('reading zip file from web')
-        zip_file = fetch_zip_file(zip_url)
-    elif os.path.isfile(zip_url):
-        print('reading zip file from disk')
-        zip_file = zipfile.ZipFile(zip_url)
+        zip_file, filetype = fetch_zip_file(zip_url)
     else:
         raise ValueError('zip_url is not an URL nor a file in disk')
 
-    dataframes = read_files(zip_file)
+    dataframes = read_files(zip_file, filetype)
     print('concatenating...')
     dataframe = pd.concat(dataframes)
     dataframe = dataframe.sort_values('utc_time', ascending=False)
