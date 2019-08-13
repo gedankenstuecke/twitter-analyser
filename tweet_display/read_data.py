@@ -40,11 +40,12 @@ def check_retweet(single_tweet):
     return name & user name of the RT'd user.
     otherwise just return nones
     '''
-    if single_tweet['full_text'].startswith("RT @"):
-        if len(single_tweet['entities']['user_mentions']) > 0:
-            return (
-                single_tweet['entities']['user_mentions'][0]['screen_name'],
-                single_tweet['entities']['user_mentions'][0]['name'],)
+    if 'full_text' in single_tweet.keys():
+        if single_tweet['full_text'].startswith("RT @"):
+            if len(single_tweet['entities']['user_mentions']) > 0:
+                return (
+                  single_tweet['entities']['user_mentions'][0]['screen_name'],
+                  single_tweet['entities']['user_mentions'][0]['name'])
     if 'retweeted_status' in single_tweet.keys():
         return (single_tweet['retweeted_status']['user']['screen_name'],
                 single_tweet['retweeted_status']['user']['name'])
@@ -150,7 +151,10 @@ def create_dataframe(tweets):
         reply = check_reply_to(single_tweet)
         reply_user_name.append(reply[0])
         reply_name.append(reply[1])
-        text.append(single_tweet['full_text'])
+        if 'full_text' in single_tweet.keys():
+            text.append(single_tweet['full_text'])
+        else:
+            text.append(single_tweet['text'])
     # convert the whole shebang into a pandas dataframe
     dataframe = pd.DataFrame(data={
                             'utc_time': utc_time,
