@@ -61,6 +61,7 @@ def import_data(oh_user_id):
     oh_user = OpenHumansMember.objects.get(oh_id=oh_user_id)
     delete_old_data(oh_user_id)
     dataframe = create_main_dataframe(url)
+    print(dataframe.head())
     try:
         retweet_gender = predict_gender(dataframe, 'retweet_name', '180d')
         write_graph(retweet_gender, oh_user, 'gender_rt', 'retweets by gender')
@@ -76,18 +77,18 @@ def import_data(oh_user_id):
         write_graph(hourly_stats, oh_user, 'hourly_tweets', 'tweets per hour')
     except:
         logger.error('hourly stats crashed')
-    try:
-        tweet_types = create_tweet_types(dataframe)
-        write_graph(tweet_types, oh_user, 'tweet_types',
-                    'tweet types over time')
-    except:
-        logger.error('tweet types crashed')
-    try:
-        top_replies = create_top_replies(dataframe)
-        write_graph(top_replies, oh_user, 'top_replies',
-                    'top users you replied to over time')
-    except:
-        logger.error('top replies crashed')
+    #try:
+    tweet_types = create_tweet_types(dataframe)
+    write_graph(tweet_types, oh_user, 'tweet_types',
+                'tweet types over time')
+    #except:
+    #    logger.error('tweet types crashed')
+    #try:
+    top_replies = create_top_replies(dataframe)
+    write_graph(top_replies, oh_user, 'top_replies',
+                'top users you replied to over time')
+    #except:
+    #    logger.error('top replies crashed')
     try:
         heatmap = create_heatmap(dataframe)
         write_graph(heatmap, oh_user, 'heatmap',
