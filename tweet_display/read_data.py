@@ -4,12 +4,11 @@ import zipfile
 import json
 import datetime
 import pytz
-
-import os
+import ijson
 import io
 import pandas as pd
 import requests
-
+import os
 
 # tzwhere_ = tzwhere.tzwhere()
 tzf = TimezoneFinder()
@@ -24,7 +23,10 @@ def check_hashtag(single_tweet):
 
 def check_media(single_tweet):
     '''check whether tweet has any media attached'''
-    return len(single_tweet['entities']['media']) > 0
+    if 'media' in single_tweet['entities'].keys():
+        return len(single_tweet['entities']['media']) > 0
+    else:
+        return False
 
 
 def check_url(single_tweet):
@@ -38,11 +40,16 @@ def check_retweet(single_tweet):
     return name & user name of the RT'd user.
     otherwise just return nones
     '''
+    if 'full_text' in single_tweet.keys():
+        if single_tweet['full_text'].startswith("RT @"):
+            if len(single_tweet['entities']['user_mentions']) > 0:
+                return (
+                  single_tweet['entities']['user_mentions'][0]['screen_name'],
+                  single_tweet['entities']['user_mentions'][0]['name'])
     if 'retweeted_status' in single_tweet.keys():
         return (single_tweet['retweeted_status']['user']['screen_name'],
                 single_tweet['retweeted_status']['user']['name'])
-    else:
-        return (None, None)
+    return (None, None)
 
 
 def check_coordinates(single_tweet):
@@ -51,9 +58,12 @@ def check_coordinates(single_tweet):
     if yes return the coordinates
     otherwise just return nones
     '''
-    if 'coordinates' in single_tweet['geo'].keys():
-        return (single_tweet['geo']['coordinates'][0],
-                single_tweet['geo']['coordinates'][1])
+    if 'geo' in single_tweet.keys():
+        if 'coordinates' in single_tweet['geo'].keys():
+            return (float(single_tweet['geo']['coordinates'][0]),
+                    float(single_tweet['geo']['coordinates'][1]))
+        else:
+            return (None, None)
     else:
         return (None, None)
 
@@ -102,7 +112,6 @@ def create_dataframe(tweets):
     hashtag = []
     media = []
     url = []
-    twitter_user_name = []
     retweet_user_name = []
     retweet_name = []
     reply_user_name = []
@@ -110,26 +119,42 @@ def create_dataframe(tweets):
     text = []
     # iterate over all tweets and extract data
     for single_tweet in tweets:
-        utc_time.append(datetime.datetime.strptime(single_tweet['created_at'],
-                                                   '%Y-%m-%d %H:%M:%S %z'))
+        try:
+            utc_time.append(
+                datetime.datetime.strptime(
+                    single_tweet['created_at'],
+                    '%a %b %d %H:%M:%S %z %Y'))
+        except ValueError:
+            utc_time.append(
+                datetime.datetime.strptime(
+                    single_tweet['created_at'],
+                    '%Y-%m-%d %H:%M:%S %z'))
         coordinates = check_coordinates(single_tweet)
         latitude.append(coordinates[0])
         longitude.append(coordinates[1])
-        creation_time = datetime.datetime.strptime(single_tweet['created_at'],
-                                                   '%Y-%m-%d %H:%M:%S %z')
+        try:
+            creation_time = datetime.datetime.strptime(
+                    single_tweet['created_at'],
+                    '%a %b %d %H:%M:%S %z %Y')
+        except ValueError:
+            creation_time = datetime.datetime.strptime(
+                single_tweet['created_at'],
+                '%Y-%m-%d %H:%M:%S %z')
         converted_time = convert_time(coordinates, creation_time)
         local_time.append(converted_time)
         hashtag.append(check_hashtag(single_tweet))
         media.append(check_media(single_tweet))
         url.append(check_url(single_tweet))
-        twitter_user_name.append(single_tweet['user']['screen_name'])
         retweet = check_retweet(single_tweet)
         retweet_user_name.append(retweet[0])
         retweet_name.append(retweet[1])
         reply = check_reply_to(single_tweet)
         reply_user_name.append(reply[0])
         reply_name.append(reply[1])
-        text.append(single_tweet['text'])
+        if 'full_text' in single_tweet.keys():
+            text.append(single_tweet['full_text'])
+        else:
+            text.append(single_tweet['text'])
     # convert the whole shebang into a pandas dataframe
     dataframe = pd.DataFrame(data={
                             'utc_time': utc_time,
@@ -144,7 +169,6 @@ def create_dataframe(tweets):
                             'reply_user_name': reply_user_name,
                             'reply_name': reply_name,
                             'text': text,
-                            'twitter_user_name': twitter_user_name
     })
     return dataframe
 
@@ -154,11 +178,13 @@ def fetch_zip_file(zip_url):
     print('downloading files')
     tf.write(requests.get(zip_url).content)
     tf.flush()
-    return zipfile.ZipFile(tf.name)
+    if zipfile.is_zipfile(tf.name):
+        return (zipfile.ZipFile(tf.name), 'zipped')
+    else:
+        return (open(tf.name, 'r'), 'json')
 
 
-def read_files(zf):
-    print('reading index')
+def read_old_zip_archive(zf):
     with zf.open('data/js/tweet_index.js', 'r') as f:
         f = io.TextIOWrapper(f)
         d = f.readlines()[1:]
@@ -178,17 +204,43 @@ def read_files(zf):
     return data_frames
 
 
+def read_files(zf, filetype):
+    if filetype == 'zipped':
+        if 'data/js/tweet_index.js' in zf.namelist():
+            print('reading index')
+            data_frames = read_old_zip_archive(zf)
+            return data_frames
+        elif 'tweet.js' in zf.namelist():
+            with zf.open('tweet.js') as f:
+                f = io.TextIOWrapper(f)
+                tweet_string = f.readlines()
+                tweet_string = "".join([i.strip() for i in tweet_string])
+                tweet_string = tweet_string[25:]
+
+    elif filetype == 'json':
+        tweet_string = zf.readlines()
+        tweet_string = "".join([i.strip() for i in tweet_string])
+        tweet_string = tweet_string[25:]
+    correct_json = tempfile.NamedTemporaryFile(mode='w')
+    correct_json.write(tweet_string)
+    correct_json.flush()
+    tweets = ijson.items(open(correct_json.name, 'r'), 'item')
+    data_frame = create_dataframe(tweets)
+    return [data_frame]
+
+
 def create_main_dataframe(zip_url='http://ruleofthirds.de/test_archive.zip'):
     if zip_url.startswith('http'):
         print('reading zip file from web')
-        zip_file = fetch_zip_file(zip_url)
+        zip_file, filetype = fetch_zip_file(zip_url)
     elif os.path.isfile(zip_url):
         print('reading zip file from disk')
         zip_file = zipfile.ZipFile(zip_url)
+        filetype = 'zipped'
     else:
         raise ValueError('zip_url is not an URL nor a file in disk')
 
-    dataframes = read_files(zip_file)
+    dataframes = read_files(zip_file, filetype)
     print('concatenating...')
     dataframe = pd.concat(dataframes)
     dataframe = dataframe.sort_values('utc_time', ascending=False)

@@ -16,7 +16,7 @@ function startUpload() {
       replacement =  '<h3>Your Upload started</h3><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%"></div></div>'
       $("#upload_form").replaceWith('<div id="upload_form">'+replacement+'</div>');
       var xhr = new XMLHttpRequest();
-      var metadata = JSON.stringify({"tags":["twitter","twitter-archive"],"description" : "Twitter archive file"});
+      var metadata = JSON.stringify({"tags":["twitter","twitter-archive","new-twitter-archive"],"description" : "Twitter archive file"});
       xhr.open('POST', "https://www.openhumans.org/api/direct-sharing/project/files/upload/direct/?access_token={{oh_member.access_token}}", true);
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhr.send('project_member_id={{oh_member.oh_id}}&filename='+file['name']+'&metadata='+metadata);
@@ -75,11 +75,11 @@ function startUpload() {
   {% endif %}
   {% csrf_token %}
   <p>
-    <b>Upload Twitter archive file</b><br>
-    (complete zip-file as downloaded)<br>
+    <b>Upload your <code>tweet.js</code> file</b><br>
+    (either uncompressed or as a zip file)<br>
     <input id='file' type="file" name="file" class="btn">
   </p>
-  <input type="button" class="btn btn-primary" value="Upload Twitter archive" onClick="startUpload()"></br></br>
+  <input type="button" class="btn btn-primary" value="Upload Tweets" onClick="startUpload()"></br></br>
   <p>
     <small>The analysis after the upload can take a while. We will message you through
     the <em>Open Humans</em> system once your graphs are ready.</small>

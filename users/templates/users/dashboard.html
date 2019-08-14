@@ -85,11 +85,11 @@
       <div class="panel-body">
         <p>
           {% if has_data %}
-          You want to replace the Twitter archive that is stored on Open Humans with a newer copy?
+          You want to replace the tweets that are stored on Open Humans with a newer copy?
           {% else %}
-          We first need a copy of your Twitter archive loaded on Open Humans to do analysis.
+          We first need a copy of your tweets loaded on Open Humans to do our analysis.
           {% endif %}
-          Just enter the file in the form above and you're good to go.
+          Just upload the <code>tweet.js</code> file from your Twitter data export with form above and you're good to go.
         </p>
         {% include 'users/partials/upload_form.html' %}
       </div>

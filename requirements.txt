@@ -14,3 +14,4 @@ timezonefinder==2.1.2
 geojson==2.3.0
 arrow==0.12.0
 kombu==4.1.0
+ijson==2.4
