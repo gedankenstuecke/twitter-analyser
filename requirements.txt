@@ -3,13 +3,13 @@ pytz==2017.2
 gender_guesser==0.4.0
 pandas==0.20.3
 tzwhere==3.0.3
-Django==1.11.3
+Django==1.11.23
 dj-database-url==0.4.2
 whitenoise==3.3.1
 psycopg2==2.7.3.1
 redis==2.10.6
 celery==4.1.0
-requests==2.18.4
+requests==2.20.0
 timezonefinder==2.1.2
 geojson==2.3.0
 arrow==0.12.0
