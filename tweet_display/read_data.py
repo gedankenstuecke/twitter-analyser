@@ -122,39 +122,39 @@ def create_dataframe(tweets):
         try:
             utc_time.append(
                 datetime.datetime.strptime(
-                    single_tweet['created_at'],
+                    single_tweet['tweet']['created_at'],
                     '%a %b %d %H:%M:%S %z %Y'))
         except ValueError:
             utc_time.append(
                 datetime.datetime.strptime(
-                    single_tweet['created_at'],
+                    single_tweet['tweet']['created_at'],
                     '%Y-%m-%d %H:%M:%S %z'))
-        coordinates = check_coordinates(single_tweet)
+        coordinates = check_coordinates(single_tweet['tweet'])
         latitude.append(coordinates[0])
         longitude.append(coordinates[1])
         try:
             creation_time = datetime.datetime.strptime(
-                    single_tweet['created_at'],
+                    single_tweet['tweet']['created_at'],
                     '%a %b %d %H:%M:%S %z %Y')
         except ValueError:
             creation_time = datetime.datetime.strptime(
-                single_tweet['created_at'],
+                single_tweet['tweet']['created_at'],
                 '%Y-%m-%d %H:%M:%S %z')
         converted_time = convert_time(coordinates, creation_time)
         local_time.append(converted_time)
-        hashtag.append(check_hashtag(single_tweet))
-        media.append(check_media(single_tweet))
-        url.append(check_url(single_tweet))
-        retweet = check_retweet(single_tweet)
+        hashtag.append(check_hashtag(single_tweet['tweet']))
+        media.append(check_media(single_tweet['tweet']))
+        url.append(check_url(single_tweet['tweet']))
+        retweet = check_retweet(single_tweet['tweet'])
         retweet_user_name.append(retweet[0])
         retweet_name.append(retweet[1])
-        reply = check_reply_to(single_tweet)
+        reply = check_reply_to(single_tweet['tweet'])
         reply_user_name.append(reply[0])
         reply_name.append(reply[1])
-        if 'full_text' in single_tweet.keys():
-            text.append(single_tweet['full_text'])
+        if 'full_text' in single_tweet['tweet'].keys():
+            text.append(single_tweet['tweet']['full_text'])
         else:
-            text.append(single_tweet['text'])
+            text.append(single_tweet['tweet']['text'])
     # convert the whole shebang into a pandas dataframe
     dataframe = pd.DataFrame(data={
                             'utc_time': utc_time,
