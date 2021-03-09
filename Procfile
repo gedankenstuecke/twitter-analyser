@@ -1,2 +1,2 @@
 web: gunicorn twitteranalyser.wsgi --log-file=-
-worker: celery worker -A twitteranalyser --concurrency=1
+worker: celery -A twitteranalyser worker --concurrency=1
