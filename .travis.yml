@@ -10,8 +10,7 @@ python:
     - "3.6"
 
 install:
-  - pip install -r requirements.txt
-  - pip install -r dev-requirements.txt
+  - pipenv install --dev
 
 before_script:
   - mkdir bin
